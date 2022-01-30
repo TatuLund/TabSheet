@@ -1,6 +1,7 @@
 import '@vaadin/vaadin-tabs';
+import '@vaadin/vaadin-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
-import { customElement, property, css, html, LitElement } from 'lit-element';
+import { customElement, property, css, html, LitElement, TemplateResult } from 'lit-element';
 
 @customElement('tab-sheet')
 export class TabSheet extends ThemableMixin(LitElement) {
@@ -65,9 +66,9 @@ export class TabSheet extends ThemableMixin(LitElement) {
     return this._getCaptions()[index];
   }
 
-  addTab(caption : string, element : HTMLElement, tab  : string) {
+  addTab(caption : string, element : HTMLElement, icon  : string) {
 	element.setAttribute("tabcaption",caption)
-	element.setAttribute("slot",tab);
+	element.setAttribute("tabicon",icon);
 	this.appendChild(element);
   }
 
@@ -89,6 +90,25 @@ export class TabSheet extends ThemableMixin(LitElement) {
 		}
 	}
 	return captions;
+  }
+
+  _getTabs() : TemplateResult[] {
+	const templates: TemplateResult[] = [];
+	for (var i=0; i < this.children.length; i++) {
+		const element = this.children.item(i);
+		const caption = element?.getAttribute("tabcaption");
+		const icon = element?.getAttribute("tabicon");
+		if (caption && icon) {
+			const template = html`<vaadin-tab theme="${this.theme}"><vaadin-icon icon="${icon}"></vaadin-icon>${caption}</vaadin-tab>`
+			templates.push(template)
+	    } else if (caption) {
+			const template = html`<vaadin-tab theme="${this.theme}">${caption}</vaadin-tab>`
+			templates.push(template)		
+		} else {
+			templates.push(html``);
+		}
+	}
+	return templates;
   }
 
   _getSlots() : string[] {
@@ -141,8 +161,8 @@ export class TabSheet extends ThemableMixin(LitElement) {
     return html`
       <div class="container">
         <vaadin-tabs theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
-          ${this._getCaptions().map(
-	        (caption) => html`<vaadin-tab>${caption}</vaadin-tab>` 
+          ${this._getTabs().map(
+	        (template) => template
 	      )}
         </vaadin-tabs>
         ${this._getSlots().map((tab) => html`

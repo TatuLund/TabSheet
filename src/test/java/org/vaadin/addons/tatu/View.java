@@ -1,6 +1,7 @@
 package org.vaadin.addons.tatu;
 
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -12,17 +13,17 @@ public class View extends Div {
     public View() {
         TabSheet tabSheet = new TabSheet();
         tabSheet.getElement().getThemeList().add(TabsVariant.LUMO_CENTERED.getVariantName());
-        String tab1 = tabSheet.addTab("First tab", createTabContent("400px"));
+        tabSheet.addTab("First tab", createTabContent("400px"), VaadinIcon.TAB);
         tabSheet.addTab("Second tab", createTabContent("500px"));
-        String tab3 = tabSheet.addTab("Third tab", createTabContent("600px"));
+        tabSheet.addTab("Third tab", createTabContent("600px"));
         tabSheet.addTab("Fourth tab", createTabContent("700px"));
         tabSheet.addTabChangedListener(event -> {
             Notification.show("Index: '"+event.getIndex()+"' Caption: '"+event.getCaption()+"' Tab: '"+event.getTab()+"'");
         });
         tabSheet.setWidth("50%");
         tabSheet.setHeight("250px");
-        tabSheet.setSelected(tab3);
-        tabSheet.setCaption(tab1, "First area");
+        tabSheet.setSelected(2);
+        tabSheet.setCaption(tabSheet.getTab(0), "First area");
         
         add(tabSheet);
     }

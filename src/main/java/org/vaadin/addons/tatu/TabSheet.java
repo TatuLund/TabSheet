@@ -16,6 +16,7 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.shared.Registration;
 
@@ -33,9 +34,6 @@ import elemental.json.JsonObject;
 @Tag("tab-sheet")
 public class TabSheet extends Component implements HasSize, HasTheme {
 
-    private List<String> tabs = new ArrayList<>();
-    private List<String> captions = new ArrayList<>();
-
     /***
      * The default constructor.
      */
@@ -48,33 +46,40 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *  
      * @param caption Caption string used in corresponding Tab
      * @param content The content Component
-     * @param tab Unique tab indentifier
+     * @param icon Icon to be used on tab, can be null
      */
-    public void addTab(String caption, String tab, Component content) {
-        if (tabs.indexOf(tab) != -1) {
-            throw new IllegalArgumentException(
-                    "Tab key " + tab + " already in use");
-        }
-        captions.add(caption);
-        tabs.add(tab);
-        content.getElement().setAttribute("slot", tab);
+    public void addTab(String caption, Component content, VaadinIcon icon) {
+    	Objects.requireNonNull(caption,"caption must be defined");
+    	Objects.requireNonNull(content,"content must be defined");
         content.getElement().setAttribute("tabcaption", caption);
+        if (icon != null) {
+           content.getElement().setAttribute("tabicon", getIcon(icon));
+        }
         getElement().appendChild(content.getElement());
     }
 
+    private String getIcon(VaadinIcon vaadinIcon) {
+        if (vaadinIcon == null) {
+            return null;
+        } else {
+            return "vaadin:" + fixIconName(String.valueOf(vaadinIcon));
+        }
+    }
+
+    private String fixIconName(String name) {
+        String trimmed;
+        trimmed = name.toLowerCase();
+        trimmed = trimmed.replace("_", "-");
+        return trimmed;
+    }   
     /**
      * Add a new component to the TabSheet as a new sheet.
      *  
      * @param caption Caption string used in corresponding Tab
      * @param content The content Component
-     * @return Unique tab indentifier
      */
-    public String addTab(String caption, Component content) {
-        Objects.requireNonNull(caption, "caption cant be null");
-        Objects.requireNonNull(content, "content component must be defined");
-        String tab = "tab" + (tabs.size());
-        addTab(caption, tab, content);
-        return tab;
+    public void addTab(String caption, Component content) {
+        addTab(caption, content, null);
     }
 
 
@@ -101,15 +106,6 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      */
     public void removeTab(String tab) {
     	getElement().executeJs("this.removeTab($0)", tab);
-    	removeTabEntry(tab);
-    }
-
-    private void removeTabEntry(String tab) {
-        int index = tabs.indexOf(tab);
-        if (index != -1) {
-            captions.remove(index);
-            tabs.remove(index);
-        }
     }
 
     /**
@@ -130,28 +126,8 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @param index Index of the tab, base 0
      * @return Unique tab identifier
      */
-    public Optional<String> getTab(int index) {
-    	try {
-           tabs.get(index);
-    	} catch (IndexOutOfBoundsException e) {
-    		return Optional.empty();
-    	}
-        return Optional.of(tabs.get(index));
-    }
- 
-    /**
-     * Get the caption String using tab identifier.
-     * 
-     * @param tab Unique tab identifier
-     * @return The caption
-     */
-    public Optional<String> getCaption(String tab) {
-        int index = tabs.indexOf(tab);
-        if (index == -1) {
-            return Optional.empty();
-        } else {
-            return Optional.ofNullable(captions.get(index));
-        }
+    public String getTab(int index) {
+        return "tab"+index;
     }
 
     /**
@@ -182,10 +158,6 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @param caption The new caption string
      */
     public void setCaption(String tab, String caption) {
-    	int index = tabs.indexOf(tab);
-    	if (index != -1) {
-    		captions.set(index, caption);
-    	}
     	getElement().executeJs("this.setCaption($0,$1,$2)", -1, caption, tab);      
     }
 
