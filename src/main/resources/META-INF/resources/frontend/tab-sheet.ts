@@ -1,8 +1,9 @@
 import '@vaadin/vaadin-tabs';
+import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { customElement, property, css, html, LitElement } from 'lit-element';
 
 @customElement('tab-sheet')
-export class TabSheet extends LitElement {
+export class TabSheet extends ThemableMixin(LitElement) {
 
   @property()
   selected = 0;
@@ -27,9 +28,15 @@ export class TabSheet extends LitElement {
 
   selectedChanged(e: CustomEvent) {
     const page = e.detail.value;
+    const tab = this.getTab(page);
     this._doSelectTab(page);
+    const details : JSON = <JSON><unknown>{
+	  "index": page,
+      "caption": this.getTabCaption(tab),
+      "tab": tab
+    }
 	const event = new CustomEvent('tab-changed', {
-		detail: page,
+		detail: details,
         composed: true,
         cancelable: true,
         bubbles: true		
@@ -43,6 +50,10 @@ export class TabSheet extends LitElement {
 		this.shadowRoot?.getElementById(slots[i])?.style?.setProperty("display","none");
 	}
     this.shadowRoot?.getElementById(slots[page])?.style?.setProperty("display","block");	
+  }
+
+  getTab(index : number) : string {
+	return this._getSlots()[index];
   }
 
   getTabIndex(tab : string) : number {
@@ -63,6 +74,7 @@ export class TabSheet extends LitElement {
   removeTab(tab : string) {
 	const page = this.getTabIndex(tab);
 	this.removeChild(this._getElements()[page]);
+	this.requestUpdate();
   }
 
   _getCaptions() : string[] {
@@ -87,10 +99,26 @@ export class TabSheet extends LitElement {
 		if (slot) {
 			slots.push(slot);
 		} else {
-			slots.push("tab"+i);
+			const newSlot = "tab"+i;
+			element.setAttribute("slot",newSlot);
+			slots.push(newSlot);
 		}
 	}
 	return slots;
+  }
+
+  setCaption(index : number, caption : string, tab : string) {
+	if (tab) {
+		index = this.getTabIndex(tab);
+	}
+	this._getElements()[index].setAttribute("tabcaption",caption);
+	this.requestUpdate();
+  }
+
+  setSelectedTab(tab : string) {
+	const index = this.getTabIndex(tab);
+    this._doSelectTab(index);
+	this.selected=index;
   }
 
   setSelected(index : number) {
@@ -112,7 +140,7 @@ export class TabSheet extends LitElement {
   render() {
     return html`
       <div class="container">
-        <vaadin-tabs .selected=${this.selected} @selected-changed="${this.selectedChanged}">
+        <vaadin-tabs theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
           ${this._getCaptions().map(
 	        (caption) => html`<vaadin-tab>${caption}</vaadin-tab>` 
 	      )}
