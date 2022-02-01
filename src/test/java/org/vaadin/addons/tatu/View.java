@@ -1,6 +1,8 @@
 package org.vaadin.addons.tatu;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
+import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -37,7 +39,7 @@ public class View extends Div {
         tabSheet.setSelected(2);
         tabSheet.setCaption(tabSheet.getTab(0), "First area");
         
-        Checkbox orientation = new Checkbox("Vertical");
+        Checkbox orientation = new Checkbox("VERTICAL");
         orientation.addValueChangeListener(event -> {
         	if (event.getValue()) {
         		tabSheet.setOrientation(Orientation.VERTICAL);
@@ -46,12 +48,13 @@ public class View extends Div {
         	}
         });
         
-        MultiSelectListBox<TabsVariant> themes = new MultiSelectListBox<>();
+        CheckboxGroup<TabsVariant> themes = new CheckboxGroup<>();
         themes.setItems(TabsVariant.values());
         themes.addValueChangeListener(event ->  {
         	tabSheet.getElement().getThemeList().clear();
         	tabSheet.addThemeVariants(event.getValue().toArray(new TabsVariant[0]));
         });
+        themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
         add(tabSheet, orientation, themes);
     }
