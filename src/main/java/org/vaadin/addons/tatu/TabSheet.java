@@ -1,7 +1,5 @@
 package org.vaadin.addons.tatu;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -16,7 +14,12 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HasTheme;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.component.dependency.Uses;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.tabs.Tabs.Orientation;
 import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.shared.Registration;
 
@@ -32,6 +35,9 @@ import elemental.json.JsonObject;
  */
 @JsModule("./tab-sheet.ts")
 @Tag("tab-sheet")
+@Uses(Icon.class)
+@Uses(Tabs.class)
+@Uses(Tab.class)
 public class TabSheet extends Component implements HasSize, HasTheme {
 
     /***
@@ -183,6 +189,16 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         getThemeNames().removeAll(
                 Stream.of(variants).map(TabsVariant::getVariantName)
                         .collect(Collectors.toList()));
+    }
+
+    /**
+     * Sets the orientation of this tab sheet.
+     *
+     * @param orientation
+     *            the orientation
+     */
+    public void setOrientation(Orientation orientation) {
+    	getElement().setAttribute("orientation", orientation.name().toLowerCase());
     }
 
     /**

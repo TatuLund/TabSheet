@@ -9,6 +9,11 @@ export class TabSheet extends ThemableMixin(LitElement) {
   @property()
   selected = 0;
 
+  @property()
+  orientation = "horizontal";
+
+  tabs: TabsElement | null = null;
+
   static get styles() {
     return css`
         :host {
@@ -17,13 +22,23 @@ export class TabSheet extends ThemableMixin(LitElement) {
         :host([hidden]) {
           display: none !important;
         }
-        .container {
+        [part="container"] {
+	      display: flex;
+          flex-direction: column;
 	      height: inherit;
         }
-        .tab {
+        div[part="container"][orientation="vertical"] {
+          flex-direction: row;	
+        }
+        .sheet {
 	      height: inherit;
 	      overflow: auto;
+          flex-grow: 1;
+          width: 100%
 	    }
+        .tab {
+	      white-space: nowrap;
+        }
     `;
   }
 
@@ -99,10 +114,10 @@ export class TabSheet extends ThemableMixin(LitElement) {
 		const caption = element?.getAttribute("tabcaption");
 		const icon = element?.getAttribute("tabicon");
 		if (caption && icon) {
-			const template = html`<vaadin-tab theme="${this.theme}"><vaadin-icon icon="${icon}"></vaadin-icon>${caption}</vaadin-tab>`
+			const template = html`<vaadin-tab class="tab" theme="${this.theme}"><vaadin-icon icon="${icon}"></vaadin-icon>${caption}</vaadin-tab>`
 			templates.push(template)
 	    } else if (caption) {
-			const template = html`<vaadin-tab theme="${this.theme}">${caption}</vaadin-tab>`
+			const template = html`<vaadin-tab class="tab" theme="${this.theme}">${caption}</vaadin-tab>`
 			templates.push(template)		
 		} else {
 			templates.push(html``);
@@ -159,14 +174,14 @@ export class TabSheet extends ThemableMixin(LitElement) {
 
   render() {
     return html`
-      <div class="container">
-        <vaadin-tabs theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
+      <div part="container" class="container" orientation="${this.orientation}">
+        <vaadin-tabs class="tabs" orientation="${this.orientation}" theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
           ${this._getTabs().map(
 	        (template) => template
 	      )}
         </vaadin-tabs>
         ${this._getSlots().map((tab) => html`
-          <div class="tab" id=${tab} style="display: none">
+          <div class="sheet" id=${tab} style="display: none">
             <slot name=${tab}>
             </slot>
           </div>`
