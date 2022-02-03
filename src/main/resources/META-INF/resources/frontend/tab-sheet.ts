@@ -12,6 +12,9 @@ export class TabSheet extends ThemableMixin(LitElement) {
   @property()
   orientation = "horizontal";
 
+  @property()
+  theme : string = null;
+
   tabs: TabsElement | null = null;
 
   static get styles() {
@@ -27,19 +30,39 @@ export class TabSheet extends ThemableMixin(LitElement) {
           flex-direction: column;
 	      height: inherit;
         }
-        div[part="container"][orientation="vertical"] {
-          flex-direction: row;	
+        :host([orientation="vertical"]) [part="container"] {
+          flex-direction: row;
         }
-        .sheet {
+        :host([orientation="vertical"][theme~="bordered"]) [part="container"] {
+          box-shadow: 0 0 0 1px var(--lumo-contrast-30pct);
+          border-radius: var(--lumo-border-radius-m);
+        }
+        [part="sheet"] {
 	      height: inherit;
 	      overflow: auto;
           flex-grow: 1;
           width: 100%
 	    }
-        .tab {
+        :host([theme~="bordered"]) [part="sheet"] {
+          box-shadow: 0 0 0 1px var(--lumo-contrast-30pct);
+          border-radius: var(--lumo-border-radius-m);
+	    }
+        [part="tab"] {
 	      white-space: nowrap;
         }
-    `;
+        [part="tab"][theme~="bordered"] {
+          background: var(--lumo-contrast-10pct);
+        }
+        [part="tab"][theme~="bordered"][orientation="horizontal"] {
+	      border: 1px solid var(--lumo-contrast-30pct); 
+          border-bottom: none; 
+          border-top-left-radius: var(--lumo-border-radius-m);
+          border-top-right-radius: var(--lumo-border-radius-m);
+        }
+        [part="tab"][theme~="bordered"][selected] {
+	      background: var(--lumo-base-color);
+	    }
+	  `;
   }
 
   selectedChanged(e: CustomEvent) {
@@ -114,10 +137,10 @@ export class TabSheet extends ThemableMixin(LitElement) {
 		const caption = element?.getAttribute("tabcaption");
 		const icon = element?.getAttribute("tabicon");
 		if (caption && icon) {
-			const template = html`<vaadin-tab class="tab" theme="${this.theme}"><vaadin-icon icon="${icon}"></vaadin-icon>${caption}</vaadin-tab>`
+			const template = html`<vaadin-tab part="tab" theme="${this.theme}"><vaadin-icon icon="${icon}"></vaadin-icon>${caption}</vaadin-tab>`
 			templates.push(template)
 	    } else if (caption) {
-			const template = html`<vaadin-tab class="tab" theme="${this.theme}">${caption}</vaadin-tab>`
+			const template = html`<vaadin-tab part="tab" theme="${this.theme}">${caption}</vaadin-tab>`
 			templates.push(template)		
 		} else {
 			templates.push(html``);
@@ -172,16 +195,19 @@ export class TabSheet extends ThemableMixin(LitElement) {
     return elements;
   }
 
+  _setTheme(theme : string) {
+  }
+
   render() {
     return html`
-      <div part="container" class="container" orientation="${this.orientation}">
-        <vaadin-tabs class="tabs" orientation="${this.orientation}" theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
+      <div part="container" class="container">
+        <vaadin-tabs part="tabs" orientation="${this.orientation}" theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
           ${this._getTabs().map(
 	        (template) => template
 	      )}
         </vaadin-tabs>
         ${this._getSlots().map((tab) => html`
-          <div class="sheet" id=${tab} style="display: none">
+          <div class="sheet" part="sheet" id=${tab} style="display: none">
             <slot name=${tab}>
             </slot>
           </div>`
