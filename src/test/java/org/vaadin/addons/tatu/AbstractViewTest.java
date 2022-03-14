@@ -8,6 +8,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBench;
+import com.vaadin.testbench.TestBenchTestCase;
 import com.vaadin.testbench.parallel.ParallelTest;
 
 /**
@@ -24,7 +25,7 @@ import com.vaadin.testbench.parallel.ParallelTest;
  * To learn more about TestBench, visit
  * <a href="https://vaadin.com/docs/v10/testbench/testbench-overview.html">Vaadin TestBench</a>.
  */
-public abstract class AbstractViewTest extends ParallelTest {
+public abstract class AbstractViewTest extends TestBenchTestCase {
     private static final int SERVER_PORT = 8080;
 
     private final String route;
@@ -48,11 +49,12 @@ public abstract class AbstractViewTest extends ParallelTest {
 
     @Before
     public void setup() throws Exception {
-        if (isUsingHub()) {
-            super.setup();
-        } else {
-            setDriver(TestBench.createDriver(new ChromeDriver()));
-        }
+//        if (isUsingHub()) {
+//            super.setup();
+//        } else {
+//            setDriver(TestBench.createDriver(new ChromeDriver()));
+//        }
+        setDriver(TestBench.createDriver(new ChromeDriver()));
         getDriver().get(getURL(route));
     }
 

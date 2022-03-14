@@ -28,7 +28,7 @@ public class View extends Div {
 
         tabSheet.addTabChangedListener(event -> {
             Notification.show("Index: '"+event.getIndex()+"' Caption: '"+event.getCaption()+"' Tab: '"+event.getTab()+"'");
-            if (event.getCaption().equals(" ")) {
+            if (event.getCaption() != null && event.getCaption().equals(" ")) {
             	tabSheet.removeTab(event.getTab());
             	tabSheet.addTab("New", new Span("New tab"));
                 tabSheet.addTab(" ", new Div(), VaadinIcon.PLUS);
@@ -37,7 +37,7 @@ public class View extends Div {
 
         tabSheet.setWidth("50%");
         tabSheet.setHeight("300px");
-        tabSheet.setSelected(2);
+//        tabSheet.setSelected(2);
         tabSheet.setCaption(tabSheet.getTab(0), "First area");
         
         Checkbox orientation = new Checkbox("VERTICAL");
