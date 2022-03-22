@@ -16,7 +16,9 @@ export class TabSheet extends ThemableMixin(LitElement) {
   @property()
   theme : string = null;
 
-  tabs: TabsElement | null = null;
+  static get is() {
+    return 'tab-sheet';
+  }
 
   static get styles() {
     return css`
