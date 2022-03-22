@@ -1,2 +1,7 @@
-:host {
+:host([theme~="blue"]) [part="tab"] {
+	background: aliceblue;
+}
+
+:host([theme~="blue"]) [part="sheet"] { 
+	background: aliceblue;
 }

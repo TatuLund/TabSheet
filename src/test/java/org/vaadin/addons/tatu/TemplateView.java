@@ -14,23 +14,24 @@ import com.vaadin.flow.router.Route;
 @Tag("tab-sheet-view")
 public class TemplateView extends LitTemplate {
 
-	@Id("tabsheet")
-	TabSheet tabSheet;
-	
-	@Id("sheet1")
-	Div sheet1;
-	
-	@Id("sheet2")
-	Div sheet2;
+    @Id("tabsheet")
+    TabSheet tabSheet;
 
-	public TemplateView() {
-		tabSheet.setCaption("tab0", "First tab");
-		tabSheet.addTabChangedListener(event -> {
-			Notification.show("Tab "+event.getIndex());
-			if (event.getIndex() == 2) {
-				tabSheet.removeTab("tab2");
-			}
-		});
-		
-	}
+    @Id("sheet1")
+    Div sheet1;
+
+    @Id("sheet2")
+    Div sheet2;
+
+    public TemplateView() {
+        setId("template-view");
+        tabSheet.setCaption("tab0", "First tab");
+        tabSheet.addTabChangedListener(event -> {
+            Notification.show("Tab " + event.getIndex());
+            if (event.getIndex() == 2) {
+                tabSheet.removeTab("tab2");
+            }
+        });
+
+    }
 }

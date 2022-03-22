@@ -1,7 +1,8 @@
 import '@vaadin/vaadin-tabs';
 import '@vaadin/vaadin-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
-import { customElement, property, css, html, LitElement, TemplateResult } from 'lit-element';
+import { css, html, LitElement, TemplateResult } from 'lit';
+import { customElement, property } from 'lit/decorators';
 
 @customElement('tab-sheet')
 export class TabSheet extends ThemableMixin(LitElement) {
