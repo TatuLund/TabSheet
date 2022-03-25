@@ -14,10 +14,7 @@ import com.vaadin.flow.shared.ui.Transport;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
-// For future, should work in Vaadin 23, see https://github.com/vaadin/web-components/issues/401
-@Theme(themeClass = Lumo.class)
-@CssImport(value = "./tab-styles.css", themeFor = "tab-sheet")
-@CssImport(value = "./styles.css")
+@Theme(value = "mytheme")
 public class MainLayout extends AppLayout implements AppShellConfigurator {
 
     public MainLayout() {

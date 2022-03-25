@@ -9,6 +9,6 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 @Route("tab-sheet-template")
 @JsModule("./tab-sheet-template.js")
 @Tag("tab-sheet-template")
-public class UserForm extends PolymerTemplate<TemplateModel> {
+public class PolymerTemplateView extends PolymerTemplate<TemplateModel> {
     
 }
