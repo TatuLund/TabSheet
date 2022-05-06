@@ -2,25 +2,24 @@ package org.vaadin.addons.tatu;
 
 import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
 
-import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.ComponentEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
-import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
+import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.shared.Registration;
 
 @Route(value = "", layout = MainLayout.class)
+@RouteAlias(value = "tab-sheet-java")
 public class JavaView extends Div {
 
     public JavaView() {
@@ -82,7 +81,15 @@ public class JavaView extends Div {
         });
         themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
-        add(tabSheet, orientation, themes, blue);
+        IntegerField intField = new IntegerField();
+//        intField.setHasControls(true);
+        intField.setMax(10);
+        intField.setMin(0);
+        intField.addValueChangeListener(event -> {
+            Notification.show("Invalid: "+intField.isInvalid()+" Value: "+event.getValue());
+        });
+
+        add(tabSheet, orientation, themes, blue, intField);
     }
 
     public Div createTabContent(String width) {
@@ -96,4 +103,20 @@ public class JavaView extends Div {
         return div;
     }
 
+    public Registration addMyEventListener(
+            ComponentEventListener<MyEvent> listener) {
+        return addListener(MyEvent.class, listener);
+    }
+    
+    public class MyEvent extends ComponentEvent<JavaView> {
+        Object item;
+        public MyEvent(JavaView source, Object item,
+                boolean fromClient) {
+            super(source, fromClient);
+            this.item = item;
+        }
+        Object getItem() {
+            return item;
+        }
+    }
 }

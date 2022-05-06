@@ -5,10 +5,10 @@ import org.junit.Test;
 
 import com.vaadin.flow.component.notification.testbench.NotificationElement;
 
-public class PolymerTemplateIT extends AbstractViewTest {
+public class TabSheetInPolymerTemplateIT extends AbstractViewTest {
 
-    public PolymerTemplateIT() {
-        super("tab-sheet-template");
+    public TabSheetInPolymerTemplateIT() {
+        super("tab-sheet-polymer");
     }
 
     @Test

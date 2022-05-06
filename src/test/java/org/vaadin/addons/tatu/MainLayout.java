@@ -14,6 +14,7 @@ import com.vaadin.flow.shared.ui.Transport;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
+//@Push(transport = Transport.LONG_POLLING)
 @Theme(value = "mytheme")
 public class MainLayout extends AppLayout implements AppShellConfigurator {
 

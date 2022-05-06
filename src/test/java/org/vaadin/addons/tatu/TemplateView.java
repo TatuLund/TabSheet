@@ -9,7 +9,7 @@ import com.vaadin.flow.component.tabs.TabsVariant;
 import com.vaadin.flow.component.template.Id;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "template", layout = MainLayout.class)
+@Route(value = "tab-sheet-lit", layout = MainLayout.class)
 @JsModule("./tab-sheet-view.ts")
 @Tag("tab-sheet-view")
 public class TemplateView extends LitTemplate {
