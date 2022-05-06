@@ -81,15 +81,7 @@ public class JavaView extends Div {
         });
         themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
-        IntegerField intField = new IntegerField();
-//        intField.setHasControls(true);
-        intField.setMax(10);
-        intField.setMin(0);
-        intField.addValueChangeListener(event -> {
-            Notification.show("Invalid: "+intField.isInvalid()+" Value: "+event.getValue());
-        });
-
-        add(tabSheet, orientation, themes, blue, intField);
+        add(tabSheet, orientation, themes, blue);
     }
 
     public Div createTabContent(String width) {
