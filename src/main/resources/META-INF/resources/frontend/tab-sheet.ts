@@ -50,6 +50,9 @@ export class TabSheet extends ThemableMixin(LitElement) {
           box-shadow: 0 0 0 1px var(--lumo-contrast-30pct);
           border-radius: var(--lumo-border-radius-m);
 	    }
+        :host([orientation="vertical"][theme~="bordered"]) [part="sheet"] {
+    	  border-top-left-radius: unset;
+        }
         [part="tab"] {
 	      white-space: nowrap;
         }
@@ -64,6 +67,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
         }
         [part="tab"][theme~="bordered"][selected] {
 	      background: var(--lumo-base-color);
+          border-left: 1px solid var(--lumo-contrast-30pct);
 	    }
 	  `;
   }
