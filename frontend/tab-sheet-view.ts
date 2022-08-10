@@ -4,9 +4,6 @@ import { customElement, property, css, html, LitElement } from 'lit-element';
 @customElement('tab-sheet-view')
 export class TabSheetView extends LitElement {
 
-  @property()
-  selected = 0;
-
   render() {
     return html`
       <tab-sheet theme="icon-on-top" id="tabsheet">

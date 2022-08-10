@@ -1,15 +1,28 @@
 package org.vaadin.addons.tatu;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.stream.Collectors;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
+import org.openqa.selenium.By;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
+import com.vaadin.testbench.Parameters;
 import com.vaadin.testbench.ScreenshotOnFailureRule;
 import com.vaadin.testbench.TestBench;
 import com.vaadin.testbench.TestBenchTestCase;
-import com.vaadin.testbench.parallel.ParallelTest;
 
 /**
  * Base class for ITs
@@ -27,6 +40,7 @@ import com.vaadin.testbench.parallel.ParallelTest;
  */
 public abstract class AbstractViewTest extends TestBenchTestCase {
     private static final int SERVER_PORT = 8080;
+    private static final String WEB_SOCKET_CONNECTION_ERROR_PREFIX = "WebSocket connection to ";
 
     private final String route;
 
@@ -46,18 +60,81 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
     protected AbstractViewTest(String route) {
         this.route = route;
     }
+    
+    protected void open() {
+        open((String[]) null);
+    }
+
+    protected void open(String... parameters) {
+        String url = getTestURL(parameters);
+        getDriver().get(url);
+        waitForDevServer();
+    }    
+
+    /**
+     * Returns the URL to the root of the server, e.g. "http://localhost:8888"
+     *
+     * @return the URL to the root
+     */
+    protected String getRootURL() {
+        return "http://" + getDeploymentHostname() + ":" + getDeploymentPort();
+    }
+
+    protected int getDeploymentPort() {
+        return SERVER_PORT;
+    }
+
+    protected String getTestURL(String... parameters) {
+        return getTestURL(getRootURL(), parameters);
+    }
+
+    public static String getTestURL(String rootUrl,
+            String... parameters) {
+        while (rootUrl.endsWith("/")) {
+            rootUrl = rootUrl.substring(0, rootUrl.length() - 1);
+        }
+
+        if (parameters != null && parameters.length != 0) {
+            if (!rootUrl.contains("?")) {
+                rootUrl += "?";
+            } else {
+                rootUrl += "&";
+            }
+
+            rootUrl += Arrays.stream(parameters)
+                    .collect(Collectors.joining("&"));
+        }
+
+        return rootUrl;
+    }
 
     @Before
     public void setup() throws Exception {
-//        if (isUsingHub()) {
-//            super.setup();
-//        } else {
-//            setDriver(TestBench.createDriver(new ChromeDriver()));
-//        }
-        setDriver(TestBench.createDriver(new ChromeDriver()));
+        ChromeOptions options = new ChromeOptions();
+        options.setHeadless(true);
+        setDriver(TestBench.createDriver(new ChromeDriver(options)));
         getDriver().get(getURL(route));
+
+        // We do screenshot testing, adjust settings to ensure less flakiness
+        Parameters.setScreenshotComparisonTolerance(0.05);
+        Parameters.setScreenshotComparisonCursorDetection(true);
+        testBench().resizeViewPortTo(800, 600);
+        Parameters.setMaxScreenshotRetries(3);
+        Parameters.setScreenshotRetryDelay(1000); 
+        
+        // Wait for frontend compilation complete before testing
+        waitForDevServer();
     }
 
+    public void waitForDevServer() {
+        Object result;
+        do {
+            getCommandExecutor().waitForVaadin();
+            result = getCommandExecutor().executeScript(
+                    "return window.Vaadin && window.Vaadin.Flow && window.Vaadin.Flow.devServerIsNotLoaded;");
+        } while (Boolean.TRUE.equals(result));
+    }
+    
     /**
      * Returns deployment host name concatenated with route.
      *
@@ -93,4 +170,18 @@ public abstract class AbstractViewTest extends TestBenchTestCase {
     private static String getDeploymentHostname() {
         return isUsingHub() ? System.getenv("HOSTNAME") : "localhost";
     }
+
+    protected void waitForElementPresent(final By by) {
+        waitUntil(ExpectedConditions.presenceOfElementLocated(by));
+    }
+
+    protected void waitForElementNotPresent(final By by) {
+        waitUntil(input -> input.findElements(by).isEmpty());
+    }
+
+    protected void waitForElementVisible(final By by) {
+        waitUntil(ExpectedConditions.visibilityOfElementLocated(by));
+    }
+
+
 }
