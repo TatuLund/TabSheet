@@ -8,7 +8,7 @@
 	<artifactId>tabsheet</artifactId>
 	<version>1.5.0</version>
 	<name>TabSheet</name>
-	<description>Integration of paper-slider for Vaadin platform</description>
+	<description>Lit-based TabSheet component for Vaadin</description>
 
 	<properties>
 		<vaadin.version>23.0.9</vaadin.version>
