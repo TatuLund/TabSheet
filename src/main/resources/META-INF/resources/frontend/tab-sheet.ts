@@ -14,7 +14,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
   orientation = "horizontal";
 
   @property()
-  theme : string = null;
+  theme : string | null = null;
 
   static get is() {
     return 'tab-sheet';
@@ -165,7 +165,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
 			slots.push(slot);
 		} else {
 			const newSlot = "tab"+i;
-			element.setAttribute("slot",newSlot);
+			element?.setAttribute("slot",newSlot);
 			slots.push(newSlot);
 		}
 	}
