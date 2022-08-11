@@ -49,12 +49,13 @@ public class JavaView extends Div {
         // tabSheet.getElement().getStyle().set("--lumo-border-radius-m",
         // "10px");
 
-        tabSheet.setWidth("50%");
+        tabSheet.setWidth("100%");
         tabSheet.setHeight("300px");
         // tabSheet.setSelected(2);
         tabSheet.setCaption(tabSheet.getTab(0), "First area");
 
         Checkbox blue = new Checkbox("BLUE");
+        blue.setId("blue");
         blue.addValueChangeListener(event -> {
             if (event.getValue()) {
                 tabSheet.addThemeName("blue");
@@ -64,6 +65,7 @@ public class JavaView extends Div {
         });
 
         Checkbox orientation = new Checkbox("VERTICAL");
+        orientation.setId("orientation");
         orientation.addValueChangeListener(event -> {
             if (event.getValue()) {
                 tabSheet.setOrientation(Orientation.VERTICAL);
@@ -73,6 +75,7 @@ public class JavaView extends Div {
         });
 
         CheckboxGroup<TabSheetVariant> themes = new CheckboxGroup<>();
+        themes.setId("themes");
         themes.setItems(TabSheetVariant.values());
         themes.addValueChangeListener(event -> {
             tabSheet.getElement().getThemeList().clear();
@@ -93,22 +96,5 @@ public class JavaView extends Div {
         div.add(area);
         div.setSizeFull();
         return div;
-    }
-
-    public Registration addMyEventListener(
-            ComponentEventListener<MyEvent> listener) {
-        return addListener(MyEvent.class, listener);
-    }
-    
-    public class MyEvent extends ComponentEvent<JavaView> {
-        Object item;
-        public MyEvent(JavaView source, Object item,
-                boolean fromClient) {
-            super(source, fromClient);
-            this.item = item;
-        }
-        Object getItem() {
-            return item;
-        }
     }
 }

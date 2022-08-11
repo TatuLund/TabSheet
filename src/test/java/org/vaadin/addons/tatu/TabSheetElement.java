@@ -19,4 +19,8 @@ public class TabSheetElement extends TestBenchElement {
         List<DivElement> divs = this.$(DivElement.class).attribute("part","sheet").all();
         return divs.get(i).isDisplayed();
     }
+
+    public TabsElement getTabs() {
+        return this.$(TabsElement.class).first();
+    }
 }
