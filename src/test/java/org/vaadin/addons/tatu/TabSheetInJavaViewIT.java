@@ -9,7 +9,6 @@ import org.openqa.selenium.By;
 import com.vaadin.flow.component.checkbox.testbench.CheckboxElement;
 import com.vaadin.flow.component.notification.testbench.NotificationElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
-import com.vaadin.flow.component.tabs.testbench.TabsElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.screenshot.ImageFileUtil;
 

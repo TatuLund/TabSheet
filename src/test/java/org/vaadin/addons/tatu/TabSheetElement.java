@@ -3,7 +3,6 @@ package org.vaadin.addons.tatu;
 import java.util.List;
 
 import com.vaadin.flow.component.html.testbench.DivElement;
-import com.vaadin.flow.component.tabs.testbench.TabsElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.elementsbase.Element;
 

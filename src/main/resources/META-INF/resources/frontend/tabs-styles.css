@@ -1,6 +1,0 @@
-:host([orientation="horizontal"][theme~="bordered"]) [part="tabs"] {
-  gap: var(--lumo-space-s);
-}
-:host([orientation="vertical"]) [part='tabs'] {
-  margin: 0px;
-}

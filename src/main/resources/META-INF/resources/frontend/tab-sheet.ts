@@ -3,6 +3,7 @@ import '@vaadin/vaadin-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { css, html, LitElement, TemplateResult } from 'lit';
 import { customElement, property } from 'lit/decorators';
+import './custom-tabs.js'
 
 @customElement('tab-sheet')
 export class TabSheet extends ThemableMixin(LitElement) {
@@ -208,11 +209,11 @@ export class TabSheet extends ThemableMixin(LitElement) {
   render() {
     return html`
       <div part="container" class="container">
-        <vaadin-tabs part="tabs" orientation="${this.orientation}" theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
+        <custom-tabs part="tabs" orientation="${this.orientation}" theme="${this.theme}" .selected=${this.selected} @selected-changed="${this.selectedChanged}">
           ${this._getTabs().map(
 	        (template) => template
 	      )}
-        </vaadin-tabs>
+        </custom-tabs>
         ${this._getSlots().map((tab) => html`
           <div class="sheet" part="sheet" id=${tab} style="display: none">
             <slot name=${tab}>

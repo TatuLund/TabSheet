@@ -34,7 +34,6 @@ import elemental.json.JsonObject;
  *
  */
 @JsModule("./tab-sheet.ts")
-@CssImport(value = "./tabs-styles.css", themeFor = "vaadin-tabs")
 @Tag("tab-sheet")
 @Uses(Icon.class)
 @Uses(Tabs.class)
