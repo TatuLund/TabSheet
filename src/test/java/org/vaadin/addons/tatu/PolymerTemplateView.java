@@ -10,5 +10,5 @@ import com.vaadin.flow.templatemodel.TemplateModel;
 @JsModule("./tab-sheet-template.js")
 @Tag("tab-sheet-template")
 public class PolymerTemplateView extends PolymerTemplate<TemplateModel> {
-    
+
 }

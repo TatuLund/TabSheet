@@ -16,11 +16,6 @@ class TabSheetTemplate extends PolymerElement {
        this.appendChild(dom);
     }
 
-    ready() {
-        super.ready();
-        this.$.form.responsiveSteps = [{columns: 16}];
-    }
-
     static get template() {
         return html`
           <tab-sheet theme="icon-on-top" id="tabsheet">

@@ -21,6 +21,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
+import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.shared.Registration;
 
 import elemental.json.JsonObject;
@@ -39,6 +40,8 @@ import elemental.json.JsonObject;
 @Uses(Tabs.class)
 @Uses(Tab.class)
 public class TabSheet extends Component implements HasSize, HasTheme {
+
+    private int lasttab = 0;
 
     public enum TabSheetVariant {
         LUMO_ICON_ON_TOP("icon-on-top"), LUMO_CENTERED("centered"), LUMO_SMALL(
@@ -86,6 +89,8 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         if (icon != null) {
             content.getElement().setAttribute("tabicon", getIcon(icon));
         }
+        content.getElement().setAttribute("slot", "sheet" + lasttab);
+        lasttab++;
         getElement().appendChild(content.getElement());
     }
 
@@ -128,9 +133,12 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      */
     public Optional<Component> getComponent(String tab) {
         Objects.requireNonNull(tab, "tab cant be null");
-        return getChildren().filter(
-                comp -> comp.getElement().getAttribute("slot").equals(tab))
-                .findFirst();
+        return getChildren().filter(comp -> {
+            String slot = comp.getElement().getAttribute("slot");
+            if (slot == null)
+                return false;
+            return slot.equals(tab);
+        }).findFirst();
     }
 
     /**
@@ -140,7 +148,29 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *            Tab identifier of the tab to be removed
      */
     public void removeTab(String tab) {
-        getElement().executeJs("this.removeTab($0)", tab);
+        getComponent(tab).ifPresentOrElse(component -> removeTab(component),
+                () -> getElement().executeJs("this.removeTab($0)", tab));
+    }
+
+    /**
+     * Remove tab and sheet based on component.
+     * <p>
+     * Note: This method can't be used if TabSheet is defined declaratively in a
+     * template.
+     * 
+     * @param component
+     *            Component of the tab to be removed, can't be null and must be
+     *            child of TabSheet.
+     */
+    public void removeTab(Component component) {
+        Objects.requireNonNull(component, "The component cannot be null");
+        if (!component.getParent().isPresent()
+                || component.getParent().get() != this) {
+            throw new IllegalArgumentException(
+                    "Component needs to be child of TabSheet");
+        }
+        getElement().removeChild(component.getElement());
+        getElement().executeJs("this.requestUpdate()");
     }
 
     /**
@@ -166,7 +196,16 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @return Unique tab identifier
      */
     public String getTab(int index) {
-        return "tab" + index;
+        if (index < 0) {
+            throw new IllegalArgumentException("Index can't be negative");
+        }
+        try {
+            Element component = getElement().getChildren()
+                    .collect(Collectors.toList()).get(index);
+            return component.getAttribute("slot");
+        } catch (IndexOutOfBoundsException e) {
+            return "tab" + index;
+        }
     }
 
     /**
@@ -189,6 +228,9 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *            Index of the tab, base 0.
      */
     public void setSelected(int index) {
+        if (index < 0) {
+            throw new IllegalArgumentException("Index can't be negative");
+        }
         getElement().setProperty("selected", index);
     }
 

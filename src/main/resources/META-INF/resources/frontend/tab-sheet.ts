@@ -2,8 +2,9 @@ import '@vaadin/vaadin-tabs';
 import '@vaadin/vaadin-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators';
-import './custom-tabs.js'
+import { customElement, property } from 'lit/decorators.js';
+import { TabsSelectedChangedEvent } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import './custom-tabs.js';
 
 @customElement('tab-sheet')
 export class TabSheet extends ThemableMixin(LitElement) {
@@ -73,7 +74,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
 	  `;
   }
 
-  selectedChanged(e: CustomEvent) {
+  selectedChanged(e: TabsSelectedChangedEvent) {
     const page = e.detail.value;
     const tab = this.getTab(page);
     this._doSelectTab(page);
