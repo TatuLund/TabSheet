@@ -6,7 +6,6 @@ import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.AppShellConfigurator;
 import com.vaadin.flow.component.page.Push;
 import com.vaadin.flow.router.PreserveOnRefresh;
 import com.vaadin.flow.router.RouterLink;
@@ -15,8 +14,8 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 
 //@Push(transport = Transport.LONG_POLLING)
-@Theme(value = "mytheme")
-public class MainLayout extends AppLayout implements AppShellConfigurator {
+@Theme(themeFolder = "mytheme")
+public class MainLayout extends AppLayout {
 
     public MainLayout() {
 

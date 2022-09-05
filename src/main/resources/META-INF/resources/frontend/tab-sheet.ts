@@ -1,9 +1,7 @@
 import '@vaadin/vaadin-tabs';
-import '@vaadin/vaadin-icon';
+import '@polymer/iron-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
-import { css, html, LitElement, TemplateResult } from 'lit';
-import { customElement, property } from 'lit/decorators.js';
-import { TabsSelectedChangedEvent } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import { customElement, property, css, html, LitElement, TemplateResult } from 'lit-element';
 import './custom-tabs.js';
 
 @customElement('tab-sheet')
@@ -74,7 +72,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
 	  `;
   }
 
-  selectedChanged(e: TabsSelectedChangedEvent) {
+  selectedChanged(e: CustomEvent) {
     const page = e.detail.value;
     const tab = this.getTab(page);
     this._doSelectTab(page);
@@ -146,7 +144,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
 		const caption = element?.getAttribute("tabcaption");
 		const icon = element?.getAttribute("tabicon");
 		if (caption && icon) {
-			const template = html`<vaadin-tab part="tab" theme="${this.theme}"><vaadin-icon icon="${icon}"></vaadin-icon>${caption}</vaadin-tab>`
+			const template = html`<vaadin-tab part="tab" theme="${this.theme}"><iron-icon icon="${icon}"></iron-icon>${caption}</vaadin-tab>`
 			templates.push(template)
 	    } else if (caption) {
 			const template = html`<vaadin-tab part="tab" theme="${this.theme}">${caption}</vaadin-tab>`

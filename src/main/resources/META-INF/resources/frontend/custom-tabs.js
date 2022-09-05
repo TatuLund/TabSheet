@@ -1,7 +1,7 @@
-import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { Tabs } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import { html } from '@polymer/polymer/polymer-element.js';
+import { TabsElement } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
 
-export class CustomTabs extends Tabs {
+export class CustomTabs extends TabsElement {
   static get is() {
     return 'custom-tabs'
   }
