@@ -1,1 +1,9 @@
 /* Import your application global css files here or add the styles directly to this file */
+
+tab-sheet[theme~="blue"]::part(tab) {
+	background: aliceblue;
+}
+
+tab-sheet[theme~="blue"]::part(sheet) {
+	background: aliceblue;
+}

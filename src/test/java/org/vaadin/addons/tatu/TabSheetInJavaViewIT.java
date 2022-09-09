@@ -54,14 +54,13 @@ public class TabSheetInJavaViewIT extends AbstractViewTest {
         });
     }
 
-//    ThemableMixin does not work in Vaadin 14 /w LitElement
-//    @Test
-//    public void themableMixinWorks() throws IOException {
-//        CheckboxElement blue = $(CheckboxElement.class).id("blue");
-//        blue.setChecked(true);
-//        Assert.assertTrue(testBench().compareScreen(
-//                ImageFileUtil.getReferenceScreenshotFile("blue-theme.png")));
-//    }
+    @Test
+    public void themableMixinWorks() throws IOException {
+        CheckboxElement blue = $(CheckboxElement.class).id("blue");
+        blue.setChecked(true);
+        Assert.assertTrue(testBench().compareScreen(
+                ImageFileUtil.getReferenceScreenshotFile("blue-theme.png")));
+    }
 
     @Test
     public void borderedThemeWorks() throws IOException {
