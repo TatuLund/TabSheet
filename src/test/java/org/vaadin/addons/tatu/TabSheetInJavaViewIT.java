@@ -23,7 +23,7 @@ public class TabSheetInJavaViewIT extends AbstractViewTest {
         super.setup();
 
         // Hide dev mode gizmo, it would interfere screenshot tests
-        $("vaadin-devmode-gizmo").first().setProperty("hidden", true);
+        $("vaadin-dev-tools").first().setProperty("hidden", true);
     }
  
     @Test
