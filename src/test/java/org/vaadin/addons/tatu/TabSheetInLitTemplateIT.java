@@ -15,7 +15,7 @@ public class TabSheetInLitTemplateIT extends AbstractViewTest {
     }
     
     @Test
-    public void componentWorksJava() throws IOException {
+    public void componentWorksLit() throws IOException {
         TemplateViewElement template = $(TemplateViewElement.class).first();        
         TabSheetElement tabSheet = template.getTabSheet();        
         Assert.assertTrue(tabSheet.isSheetDisplayed(0));

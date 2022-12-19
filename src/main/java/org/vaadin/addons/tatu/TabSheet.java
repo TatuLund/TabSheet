@@ -73,7 +73,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     }
 
     /**
-     * /** Add a new component to the TabSheet as a new sheet.
+     * Add a new component to the TabSheet as a new sheet.
      * 
      * @param caption
      *            Caption string used in corresponding Tab
@@ -81,13 +81,18 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *            The content Component
      * @param icon
      *            Icon to be used on tab, can be null
+     * @param tooltip
+     *            String used on tab for tooltip text, can be null
      */
-    public void addTab(String caption, Component content, VaadinIcon icon) {
+    public void addTab(String caption, Component content, VaadinIcon icon, String tooltip) {
         Objects.requireNonNull(caption, "caption must be defined");
         Objects.requireNonNull(content, "content must be defined");
         content.getElement().setAttribute("tabcaption", caption);
         if (icon != null) {
             content.getElement().setAttribute("tabicon", getIcon(icon));
+        }
+        if (tooltip != null) {
+            content.getElement().setAttribute("tooltip", tooltip);
         }
         content.getElement().setAttribute("slot", "sheet" + lasttab);
         lasttab++;
@@ -116,9 +121,23 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *            Caption string used in corresponding Tab
      * @param content
      *            The content Component
+     * @param icon
+     *            Icon to be used on tab, can be null
+     */
+    public void addTab(String caption, Component content, VaadinIcon icon) {
+        addTab(caption, content, icon, null);
+    }
+    
+    /**
+     * Add a new component to the TabSheet as a new sheet.
+     * 
+     * @param caption
+     *            Caption string used in corresponding Tab
+     * @param content
+     *            The content Component
      */
     public void addTab(String caption, Component content) {
-        addTab(caption, content, null);
+        addTab(caption, content, null, null);
     }
 
     /**

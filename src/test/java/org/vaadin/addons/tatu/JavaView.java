@@ -28,13 +28,13 @@ public class JavaView extends Div {
         TabSheet tabSheet = new TabSheet();
         tabSheet.addThemeVariants(TabSheetVariant.LUMO_CENTERED);
         tabSheet.addTab("First tab", createTabContent("400px"),
-                VaadinIcon.TEXT_INPUT);
+                VaadinIcon.TEXT_INPUT, "The first tab");
         tabSheet.addTab("Second tab", createTabContent("500px"),
                 VaadinIcon.TEXT_INPUT);
         tabSheet.addTab("Third tab", createTabContent("600px"),
                 VaadinIcon.TEXT_INPUT);
         tabSheet.addTab("Fourth tab", createTabContent("700px"),
-                VaadinIcon.TEXT_INPUT);
+                VaadinIcon.TEXT_INPUT, "The last tab");
         tabSheet.addTab(" ", new Div(), VaadinIcon.PLUS);
 
         tabSheet.addTabChangedListener(event -> {

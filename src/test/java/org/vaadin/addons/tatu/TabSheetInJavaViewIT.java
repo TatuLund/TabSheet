@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.openqa.selenium.By;
+import org.openqa.selenium.interactions.Actions;
 
 import com.vaadin.flow.component.checkbox.testbench.CheckboxElement;
 import com.vaadin.flow.component.notification.testbench.NotificationElement;
@@ -55,25 +56,40 @@ public class TabSheetInJavaViewIT extends AbstractViewTest {
     }
 
     @Test
+    public void tooltipWorks() {
+        Actions action = new Actions(getDriver());
+        TabSheetElement tabSheet = $(TabSheetElement.class).first();
+        TabElement tab = tabSheet.getTabs().getTabElement("First area");
+        action.moveToElement(tab).perform();
+        TestBenchElement tooltip = $("vaadin-tooltip-overlay").first();
+        Assert.assertEquals("The first tab", tooltip.getText());        
+        tab = tabSheet.getTabs().getTabElement("Fourth tab");
+        action.moveToElement(tab).perform();
+        tooltip = $("vaadin-tooltip-overlay").last();
+        Assert.assertEquals("The last tab", tooltip.getText());        
+    }
+
+    @Test
     public void themableMixinWorks() throws IOException {
+        TabSheetElement tabSheet = $(TabSheetElement.class).first();
         CheckboxElement blue = $(CheckboxElement.class).id("blue");
         blue.setChecked(true);
-        Assert.assertTrue(testBench().compareScreen(
+        Assert.assertTrue(tabSheet.compareScreen(
                 ImageFileUtil.getReferenceScreenshotFile("blue-theme.png")));
     }
 
     @Test
     public void borderedThemeWorks() throws IOException {
+        TabSheetElement tabSheet = $(TabSheetElement.class).first();
         TestBenchElement variants = $(TestBenchElement.class).first();
         CheckboxElement bordered = variants.$(CheckboxElement.class).get(7);
         bordered.setChecked(true);
-        Assert.assertTrue(testBench().compareScreen(
+        Assert.assertTrue(tabSheet.compareScreen(
                 ImageFileUtil.getReferenceScreenshotFile("bordered-theme.png")));
         CheckboxElement orientation = $(CheckboxElement.class).id("orientation");
         orientation.setChecked(true);
-        Assert.assertTrue(testBench().compareScreen(
+        Assert.assertTrue(tabSheet.compareScreen(
                 ImageFileUtil.getReferenceScreenshotFile("bordered-theme-vertical.png")));
     }
-
 
 }
