@@ -254,6 +254,14 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     }
 
     /**
+     * Get selected tab index.
+     *
+     * @return Index of the tab, base 0 or -1 of no selection.
+     */
+    public int getSelectedIndex() {
+        return this.getElement().getProperty("selected", -1);
+    }
+    /**
      * Change the caption string used by tab.
      * 
      * @param tab
