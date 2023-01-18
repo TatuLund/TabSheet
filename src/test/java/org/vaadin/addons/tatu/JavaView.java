@@ -1,5 +1,9 @@
 package org.vaadin.addons.tatu;
 
+import com.helger.commons.url.IURLParameterList;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
 
 import com.vaadin.flow.component.ComponentEvent;
@@ -18,9 +22,14 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.shared.Registration;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Route(value = "", layout = MainLayout.class)
 @RouteAlias(value = "tab-sheet-java")
 public class JavaView extends Div {
+
+    private List<Component> allTabs = new ArrayList<>();
 
     public JavaView() {
         setId("java-view");
@@ -84,7 +93,17 @@ public class JavaView extends Div {
         });
         themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
-        add(tabSheet, orientation, themes, blue);
+        // Selection buttons
+        Button selectFirst = new Button("First (div)", e-> tabSheet.setSelectedTab(allTabs.get(0)));
+        Button selectFirstIndex = new Button("First (index)", e-> tabSheet.setSelectedIndex(0));
+        Button selectFirstId = new Button("First (id)", e-> tabSheet.setSelected("sheet0"));
+        Button selectLast = new Button("Last (div)", e-> tabSheet.setSelectedTab(allTabs.get(allTabs.size()-1)));
+        Button selectLastIndex = new Button("Last (index)", e-> tabSheet.setSelectedIndex(allTabs.size()-1));
+        Button selectLastId = new Button("Last (id)", e-> tabSheet.setSelected("sheet"+(allTabs.size()-1)));
+        HorizontalLayout selectionButtons = new HorizontalLayout(
+                selectFirst,selectFirstIndex,selectFirstId,
+                selectLast, selectLastIndex, selectLastId);
+        add(tabSheet, orientation, themes, blue, selectionButtons);
     }
 
     public Div createTabContent(String width) {
@@ -95,6 +114,7 @@ public class JavaView extends Div {
         area.setWidth(width);
         div.add(area);
         div.setSizeFull();
+        allTabs.add(div);
         return div;
     }
 }
