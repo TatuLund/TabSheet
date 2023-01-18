@@ -2,6 +2,7 @@ package org.vaadin.addons.tatu;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -271,21 +272,35 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     }
 
     /**
-     * Get selected tab index.
+     * Get selected tab Component.
      *
-     * @return Index of the tab, base 0 or -1 of no selection.
+     * @return Selected tab Component or <code>null</code> if no selection.
      */
-    public int getSelectedIndex() {
-        return this.getElement().getProperty("selected", -1);
+    public Component getSelectedTab() {
+        String id = getSelected();
+        return id == null ? null : this.getComponent(id).orElse(null);
     }
     /**
-     * Get selected tab index.
+     * Set selected tab using index. This will fire TabChangeEvent. Sheet
+     * attached to the tab will be shown.
      *
-     * @return Index of the tab, base 0 or -1 of no selection.
+     * @param tab
+     *            Component to select.
      */
-    public int getSelectedIndex() {
-        return this.getElement().getProperty("selected", -1);
+    public void setSelectedTab(Component tab) {
+        if (tab == null) {
+            throw new IllegalArgumentException("Tab can't be null");
+        }
+        AtomicInteger index = new AtomicInteger(-1);
+        getChildren().peek(x -> index.incrementAndGet())  // increment every element encounter
+                .filter(tab::equals)
+                .findFirst()
+                .get();
+        if (index.get() >= 0) {
+            setSelectedIndex(index.get());
+        }
     }
+
     /**
      * Change the caption string used by tab.
      * 
