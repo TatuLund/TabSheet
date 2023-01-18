@@ -246,7 +246,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @param index
      *            Index of the tab, base 0.
      */
-    public void setSelected(int index) {
+    public void setSelectedIndex(int index) {
         if (index < 0) {
             throw new IllegalArgumentException("Index can't be negative");
         }
