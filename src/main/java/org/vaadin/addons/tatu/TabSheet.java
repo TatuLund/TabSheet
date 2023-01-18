@@ -228,6 +228,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     }
 
     /**
+     * Get selected tab identifier.
+     * @return Unique tab identifier or <code>null</code> if no selection.
+     */
+    public String getSelected() {
+        int i = getSelectedIndex();
+        return i>=0? getTab(i) : null;
+    }
+
+    /**
      * Set selected tab using identifier. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
      * 
@@ -239,6 +248,14 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         getElement().executeJs("this.setSelectedTab($0)", tab);
     }
 
+    /**
+     * Get selected tab index.
+     *
+     * @return Index of the tab, base 0 or -1 of no selection.
+     */
+    public int getSelectedIndex() {
+        return this.getElement().getProperty("selected", -1);
+    }
     /**
      * Set selected tab using index. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
@@ -253,6 +270,14 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         getElement().setProperty("selected", index);
     }
 
+    /**
+     * Get selected tab index.
+     *
+     * @return Index of the tab, base 0 or -1 of no selection.
+     */
+    public int getSelectedIndex() {
+        return this.getElement().getProperty("selected", -1);
+    }
     /**
      * Get selected tab index.
      *
