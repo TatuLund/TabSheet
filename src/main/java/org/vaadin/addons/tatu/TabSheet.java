@@ -353,11 +353,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         private TabSheet source;
         private String caption;
         private String tab;
+        private final int previousIndex;
+        private final String previousTab;
 
         public TabChangedEvent(TabSheet source, boolean fromClient,
                 @EventData("event.detail") JsonObject details) {
             super(source, fromClient);
             this.index = (int) details.getNumber("index");
+            this.previousIndex = (int) details.getNumber("previousIndex");
+            this.previousTab =  details.getString("previousTab");
             this.tab = details.getString("tab");
             this.caption = details.getString("caption");
             this.source = source;
@@ -379,6 +383,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
          */
         public String getTab() {
             return tab;
+        }
+
+        /**
+         * Get the tab identifier of preciously selected tab.
+         *
+         * @return The unique Tab identifier
+         */
+        public String getPreviousTab() {
+            return previousTab;
         }
 
         /**
@@ -406,6 +419,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
          */
         public int getIndex() {
             return index;
+        }
+
+        /**
+         * Get the index of the previously selected tab.
+         *
+         * @return The index of the selected tab, base 0
+         */
+        public int getPreviousIndex() {
+            return previousIndex;
         }
     }
 

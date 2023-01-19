@@ -80,12 +80,14 @@ export class TabSheet extends ThemableMixin(LitElement) {
     const tab = this.getTab(page);
     this._doSelectTab(page);
     const details : JSON = <JSON><unknown>{
-	  "index": page,
+	    "index": page,
       "caption": this.getTabCaption(tab),
-      "tab": tab
+      "tab": tab,
+      "previousIndex": this.selected,
+      "previousTab": this.getTab(this.selected),
     }
     this.selected = page;
-	const event = new CustomEvent('tab-changed', {
+    const event = new CustomEvent('tab-changed', {
 		detail: details,
         composed: true,
         cancelable: true,

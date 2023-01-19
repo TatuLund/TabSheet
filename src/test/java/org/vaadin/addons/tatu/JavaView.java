@@ -43,8 +43,8 @@ public class JavaView extends Div {
 
         tabSheet.addTabChangedListener(event -> {
             Notification.show(
-                    "FROM Index: '" + tabSheet.getSelectedIndex() + "' Tab: '"
-                            + tabSheet.getSelected() + "'"
+                    "FROM Index: '" + event.getPreviousIndex() + "' Tab: '"
+                            + event.getPreviousTab() + "'"
                     + " TO Index: '" + event.getIndex() + "' Caption: '"
                     + event.getCaption() + "' Tab: '" + event.getTab() + "'");
             if (event.getCaption() != null && event.getCaption().equals(" ")) {
