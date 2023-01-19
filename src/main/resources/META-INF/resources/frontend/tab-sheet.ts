@@ -84,6 +84,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
       "caption": this.getTabCaption(tab),
       "tab": tab
     }
+    this.selected = page;
 	const event = new CustomEvent('tab-changed', {
 		detail: details,
         composed: true,
