@@ -42,7 +42,10 @@ public class JavaView extends Div {
         tabSheet.addTab(" ", new Div(), VaadinIcon.PLUS);
 
         tabSheet.addTabChangedListener(event -> {
-            Notification.show("Index: '" + event.getIndex() + "' Caption: '"
+            Notification.show(
+                    "FROM Index: '" + tabSheet.getSelectedIndex() + "' Tab: '"
+                            + tabSheet.getSelected() + "'"
+                    + " TO Index: '" + event.getIndex() + "' Caption: '"
                     + event.getCaption() + "' Tab: '" + event.getTab() + "'");
             if (event.getCaption() != null && event.getCaption().equals(" ")) {
                 tabSheet.removeTab(event.getTab());

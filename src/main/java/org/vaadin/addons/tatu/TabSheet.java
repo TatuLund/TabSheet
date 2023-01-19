@@ -6,14 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.EventData;
-import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HasTheme;
-import com.vaadin.flow.component.Tag;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.Uses;
@@ -254,6 +247,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *
      * @return Index of the tab, base 0 or -1 of no selection.
      */
+    @Synchronize(property = "selected", value = "tab-changed")
     public int getSelectedIndex() {
         return this.getElement().getProperty("selected", -1);
     }
