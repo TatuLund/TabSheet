@@ -276,7 +276,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *
      * @return Selected tab Component or <code>null</code> if no selection.
      */
-    public Component getSelectedTab() {
+    public Component getSelectedComponent() {
         String id = getSelected();
         return id == null ? null : this.getComponent(id).orElse(null);
     }
@@ -287,7 +287,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @param tab
      *            Component to select.
      */
-    public void setSelectedTab(Component tab) {
+    public void setSelectedComponent(Component tab) {
         if (tab == null) {
             throw new IllegalArgumentException("Tab can't be null");
         }

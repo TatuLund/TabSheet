@@ -89,10 +89,10 @@ public class JavaView extends Div {
         themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
         // Selection buttons
-        Button selectFirst = new Button("First (div)", e-> tabSheet.setSelectedTab(allTabs.get(0)));
+        Button selectFirst = new Button("First (div)", e-> tabSheet.setSelectedComponent(allTabs.get(0)));
         Button selectFirstIndex = new Button("First (index)", e-> tabSheet.setSelectedIndex(0));
         Button selectFirstId = new Button("First (id)", e-> tabSheet.setSelected("sheet0"));
-        Button selectLast = new Button("Last (div)", e-> tabSheet.setSelectedTab(allTabs.get(allTabs.size()-1)));
+        Button selectLast = new Button("Last (div)", e-> tabSheet.setSelectedComponent(allTabs.get(allTabs.size()-1)));
         Button selectLastIndex = new Button("Last (index)", e-> tabSheet.setSelectedIndex(allTabs.size()-1));
         Button selectLastId = new Button("Last (id)", e-> tabSheet.setSelected("sheet"+(allTabs.size()-1)));
         HorizontalLayout selectionButtons = new HorizontalLayout(
@@ -111,6 +111,5 @@ public class JavaView extends Div {
         div.setSizeFull();
         allTabs.add(div);
         return div;
-        UI.getCurrent().();
     }
 }
