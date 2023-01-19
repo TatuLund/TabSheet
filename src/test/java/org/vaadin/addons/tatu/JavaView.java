@@ -1,13 +1,8 @@
 package org.vaadin.addons.tatu;
 
-import com.helger.commons.url.IURLParameterList;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
-
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
@@ -15,12 +10,12 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.shared.Registration;
+import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -116,5 +111,6 @@ public class JavaView extends Div {
         div.setSizeFull();
         allTabs.add(div);
         return div;
+        UI.getCurrent().();
     }
 }
