@@ -281,7 +281,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         return id == null ? null : this.getComponent(id).orElse(null);
     }
     /**
-     * Set selected tab using index. This will fire TabChangeEvent. Sheet
+     * Set selected tab using Component. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
      *
      * @param tab
