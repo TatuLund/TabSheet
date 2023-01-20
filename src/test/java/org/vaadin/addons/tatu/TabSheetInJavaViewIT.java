@@ -35,7 +35,7 @@ public class TabSheetInJavaViewIT extends AbstractViewTest {
         tabSheet.setSelectedTabIndex(2);
         NotificationElement notification = $(NotificationElement.class).last();
         // Assert that event shows correct tab info
-        Assert.assertTrue(notification.getText().startsWith("Index: '2'"));
+        Assert.assertTrue(notification.getText().contains("TO Index: '2'"));
         // Assert that tab 0 is not shown anymer
         Assert.assertFalse(tabSheet.isSheetDisplayed(0));
         // Assert that tab 2 is now shown instead
