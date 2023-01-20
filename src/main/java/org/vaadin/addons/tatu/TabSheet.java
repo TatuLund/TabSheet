@@ -240,6 +240,21 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         getElement().executeJs("this.setSelectedTab($0)", tab);
     }
 
+
+    /**
+     * Set selected tab using index.
+     *
+     * This method is for backward compatibility. Use <code>setSelectedIndex(int)</code> instead.
+     *
+     * @param index
+     *            Index of the tab, base 0.
+     *
+     * @see #setSelectedIndex(int)
+     */
+    public void setSelected(int index) {
+        setSelectedIndex(index);
+    }
+
     /**
      * Get selected tab index.
      *
