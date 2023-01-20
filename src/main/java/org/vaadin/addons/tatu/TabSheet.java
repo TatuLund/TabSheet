@@ -1,19 +1,6 @@
 package org.vaadin.addons.tatu;
 
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
-import com.vaadin.flow.component.DomEvent;
-import com.vaadin.flow.component.EventData;
-import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HasTheme;
-import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.icon.Icon;
@@ -23,8 +10,13 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.shared.Registration;
-
 import elemental.json.JsonObject;
+
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A basic TabSheet composed using vaadin-tabs and vaadin-tab. The client side
@@ -228,6 +220,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     }
 
     /**
+     * Get selected tab identifier.
+     * @return Unique tab identifier or <code>null</code> if no selection.
+     */
+    public String getSelected() {
+        int i = getSelectedIndex();
+        return i>=0? getTab(i) : null;
+    }
+
+    /**
      * Set selected tab using identifier. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
      * 
@@ -239,6 +240,30 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         getElement().executeJs("this.setSelectedTab($0)", tab);
     }
 
+
+    /**
+     * Set selected tab using index.
+     *
+     * This method is for backward compatibility. Use <code>setSelectedIndex(int)</code> instead.
+     *
+     * @param index
+     *            Index of the tab, base 0.
+     *
+     * @see #setSelectedIndex(int)
+     */
+    public void setSelected(int index) {
+        setSelectedIndex(index);
+    }
+
+    /**
+     * Get selected tab index.
+     *
+     * @return Index of the tab, base 0 or -1 of no selection.
+     */
+    @Synchronize(property = "selected", value = "tab-changed")
+    public int getSelectedIndex() {
+        return this.getElement().getProperty("selected", -1);
+    }
     /**
      * Set selected tab using index. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
@@ -246,11 +271,46 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @param index
      *            Index of the tab, base 0.
      */
-    public void setSelected(int index) {
+    public void setSelectedIndex(int index) {
         if (index < 0) {
             throw new IllegalArgumentException("Index can't be negative");
         }
         getElement().setProperty("selected", index);
+    }
+
+    /**
+     * Get selected tab Component.
+     *
+     * @Note: This method only works if tabs are added uson {{@link #addTab(String, Component)}} method.
+     *        If the TabSheet content is added in the template they do not exist on server side.
+     *
+     * @return Selected tab Component or <code>null</code> if no selection.
+     */
+    public Component getSelectedComponent() {
+        String id = getSelected();
+        return id == null ? null : this.getComponent(id).orElse(null);
+    }
+    /**
+     * Set selected tab using Component. This will fire TabChangeEvent. Sheet
+     * attached to the tab will be shown.
+     *
+     * @Note: This method only works if tabs are added uson {{@link #addTab(String, Component)}} method.
+     *        If the TabSheet content is added in the template they do not exist on server side.
+     * @param tab
+     *            Component to select.
+     */
+    public void setSelectedComponent(Component tab) {
+        if (tab == null) {
+            throw new IllegalArgumentException("Tab can't be null");
+        }
+        AtomicInteger index = new AtomicInteger(-1);
+        getChildren().peek(x -> index.incrementAndGet())  // increment every element encounter
+                .filter(tab::equals)
+                .findFirst()
+                .get();
+        if (index.get() >= 0) {
+            setSelectedIndex(index.get());
+        }
     }
 
     /**
@@ -313,11 +373,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         private TabSheet source;
         private String caption;
         private String tab;
+        private final int previousIndex;
+        private final String previousTab;
 
         public TabChangedEvent(TabSheet source, boolean fromClient,
                 @EventData("event.detail") JsonObject details) {
             super(source, fromClient);
             this.index = (int) details.getNumber("index");
+            this.previousIndex = (int) details.getNumber("previousIndex");
+            this.previousTab =  details.getString("previousTab");
             this.tab = details.getString("tab");
             this.caption = details.getString("caption");
             this.source = source;
@@ -339,6 +403,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
          */
         public String getTab() {
             return tab;
+        }
+
+        /**
+         * Get the tab identifier of preciously selected tab.
+         *
+         * @return The unique Tab identifier
+         */
+        public String getPreviousTab() {
+            return previousTab;
         }
 
         /**
@@ -366,6 +439,15 @@ public class TabSheet extends Component implements HasSize, HasTheme {
          */
         public int getIndex() {
             return index;
+        }
+
+        /**
+         * Get the index of the previously selected tab.
+         *
+         * @return The index of the selected tab, base 0
+         */
+        public int getPreviousIndex() {
+            return previousIndex;
         }
     }
 

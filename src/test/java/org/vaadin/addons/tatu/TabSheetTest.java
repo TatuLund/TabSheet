@@ -90,7 +90,7 @@ public class TabSheetTest {
     @Test
     public void selectedPropertySet() {
         TabSheet tabSheet = new TabSheet();
-        tabSheet.setSelected(5);
+        tabSheet.setSelectedIndex(5);
         Assert.assertEquals("5",
                 tabSheet.getElement().getProperty("selected"));
     }
@@ -98,7 +98,7 @@ public class TabSheetTest {
     @Test(expected = IllegalArgumentException.class)
     public void setSelectedPropertyNegativeThrows() {
         TabSheet tabSheet = new TabSheet();
-        tabSheet.setSelected(-5);
+        tabSheet.setSelectedIndex(-5);
     }
 
     @Test(expected = IllegalArgumentException.class)
