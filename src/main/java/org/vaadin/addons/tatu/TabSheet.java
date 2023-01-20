@@ -283,8 +283,8 @@ public class TabSheet extends Component implements HasSize, HasTheme {
 
     /**
      * Get selected tab Component.
-     *
-     * @Note: This method only works if tabs are added uson
+     *<p>
+     * Note: This method only works if tabs are added uson
      *        {{@link #addTab(String, Component)}} method. If the TabSheet
      *        content is added in the template they do not exist on server side.
      *
@@ -298,8 +298,8 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     /**
      * Set selected tab using Component. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
-     *
-     * @Note: This method only works if tabs are added uson
+     *<p>
+     * Note: This method only works if tabs are added uson
      *        {{@link #addTab(String, Component)}} method. If the TabSheet
      *        content is added in the template they do not exist on server side.
      * @param tab
