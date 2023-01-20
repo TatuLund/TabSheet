@@ -1,7 +1,6 @@
 package org.vaadin.addons.tatu;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
@@ -42,11 +41,10 @@ public class JavaView extends Div {
         tabSheet.addTab(" ", new Div(), VaadinIcon.PLUS);
 
         tabSheet.addTabChangedListener(event -> {
-            Notification.show(
-                    "FROM Index: '" + event.getPreviousIndex() + "' Tab: '"
-                            + event.getPreviousTab() + "'"
-                    + " TO Index: '" + event.getIndex() + "' Caption: '"
-                    + event.getCaption() + "' Tab: '" + event.getTab() + "'");
+            Notification.show("FROM Index: '" + event.getPreviousIndex()
+                    + "' Tab: '" + event.getPreviousTab() + "'" + " TO Index: '"
+                    + event.getIndex() + "' Caption: '" + event.getCaption()
+                    + "' Tab: '" + event.getTab() + "'");
             if (event.getCaption() != null && event.getCaption().equals(" ")) {
                 tabSheet.removeTab(event.getTab());
                 tabSheet.addTab("New", new Span("New tab"));
@@ -92,15 +90,21 @@ public class JavaView extends Div {
         themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
         // Selection buttons
-        Button selectFirst = new Button("First (div)", e-> tabSheet.setSelectedComponent(allTabs.get(0)));
-        Button selectFirstIndex = new Button("First (index)", e-> tabSheet.setSelectedIndex(0));
-        Button selectFirstId = new Button("First (id)", e-> tabSheet.setSelected("sheet0"));
-        Button selectLast = new Button("Last (div)", e-> tabSheet.setSelectedComponent(allTabs.get(allTabs.size()-1)));
-        Button selectLastIndex = new Button("Last (index)", e-> tabSheet.setSelectedIndex(allTabs.size()-1));
-        Button selectLastId = new Button("Last (id)", e-> tabSheet.setSelected("sheet"+(allTabs.size()-1)));
-        HorizontalLayout selectionButtons = new HorizontalLayout(
-                selectFirst,selectFirstIndex,selectFirstId,
-                selectLast, selectLastIndex, selectLastId);
+        Button selectFirst = new Button("First (div)",
+                e -> tabSheet.setSelectedComponent(allTabs.get(0)));
+        Button selectFirstIndex = new Button("First (index)",
+                e -> tabSheet.setSelectedIndex(0));
+        Button selectFirstId = new Button("First (id)",
+                e -> tabSheet.setSelected("sheet0"));
+        Button selectLast = new Button("Last (div)", e -> tabSheet
+                .setSelectedComponent(allTabs.get(allTabs.size() - 1)));
+        Button selectLastIndex = new Button("Last (index)",
+                e -> tabSheet.setSelectedIndex(allTabs.size() - 1));
+        Button selectLastId = new Button("Last (id)",
+                e -> tabSheet.setSelected("sheet" + (allTabs.size() - 1)));
+        HorizontalLayout selectionButtons = new HorizontalLayout(selectFirst,
+                selectFirstIndex, selectFirstId, selectLast, selectLastIndex,
+                selectLastId);
         add(tabSheet, orientation, themes, blue, selectionButtons);
     }
 

@@ -6,7 +6,7 @@
 
 	<groupId>org.vaadin.addons.tatu</groupId>
 	<artifactId>tabsheet</artifactId>
-	<version>1.7.0</version>
+	<version>1.8.0</version>
 	<name>TabSheet</name>
 	<description>Lit-based TabSheet component for Vaadin</description>
 
@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<!-- Replace artifactId with vaadin-core to use only free components -->
-			<artifactId>vaadin</artifactId>
+			<artifactId>vaadin-core</artifactId>
 		</dependency>
     	<dependency>
 			<groupId>org.slf4j</groupId>

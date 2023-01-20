@@ -76,7 +76,8 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      * @param tooltip
      *            String used on tab for tooltip text, can be null
      */
-    public void addTab(String caption, Component content, VaadinIcon icon, String tooltip) {
+    public void addTab(String caption, Component content, VaadinIcon icon,
+            String tooltip) {
         Objects.requireNonNull(caption, "caption must be defined");
         Objects.requireNonNull(content, "content must be defined");
         content.getElement().setAttribute("tabcaption", caption);
@@ -119,7 +120,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     public void addTab(String caption, Component content, VaadinIcon icon) {
         addTab(caption, content, icon, null);
     }
-    
+
     /**
      * Add a new component to the TabSheet as a new sheet.
      * 
@@ -221,11 +222,12 @@ public class TabSheet extends Component implements HasSize, HasTheme {
 
     /**
      * Get selected tab identifier.
+     * 
      * @return Unique tab identifier or <code>null</code> if no selection.
      */
     public String getSelected() {
         int i = getSelectedIndex();
-        return i>=0? getTab(i) : null;
+        return i >= 0 ? getTab(i) : null;
     }
 
     /**
@@ -240,11 +242,11 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         getElement().executeJs("this.setSelectedTab($0)", tab);
     }
 
-
     /**
      * Set selected tab using index.
      *
-     * This method is for backward compatibility. Use <code>setSelectedIndex(int)</code> instead.
+     * This method is for backward compatibility. Use
+     * <code>setSelectedIndex(int)</code> instead.
      *
      * @param index
      *            Index of the tab, base 0.
@@ -264,6 +266,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     public int getSelectedIndex() {
         return this.getElement().getProperty("selected", -1);
     }
+
     /**
      * Set selected tab using index. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
@@ -281,8 +284,9 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     /**
      * Get selected tab Component.
      *
-     * @Note: This method only works if tabs are added uson {{@link #addTab(String, Component)}} method.
-     *        If the TabSheet content is added in the template they do not exist on server side.
+     * @Note: This method only works if tabs are added uson
+     *        {{@link #addTab(String, Component)}} method. If the TabSheet
+     *        content is added in the template they do not exist on server side.
      *
      * @return Selected tab Component or <code>null</code> if no selection.
      */
@@ -290,12 +294,14 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         String id = getSelected();
         return id == null ? null : this.getComponent(id).orElse(null);
     }
+
     /**
      * Set selected tab using Component. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
      *
-     * @Note: This method only works if tabs are added uson {{@link #addTab(String, Component)}} method.
-     *        If the TabSheet content is added in the template they do not exist on server side.
+     * @Note: This method only works if tabs are added uson
+     *        {{@link #addTab(String, Component)}} method. If the TabSheet
+     *        content is added in the template they do not exist on server side.
      * @param tab
      *            Component to select.
      */
@@ -304,10 +310,9 @@ public class TabSheet extends Component implements HasSize, HasTheme {
             throw new IllegalArgumentException("Tab can't be null");
         }
         AtomicInteger index = new AtomicInteger(-1);
-        getChildren().peek(x -> index.incrementAndGet())  // increment every element encounter
-                .filter(tab::equals)
-                .findFirst()
-                .get();
+        getChildren().peek(x -> index.incrementAndGet()) // increment every
+                                                         // element encounter
+                .filter(tab::equals).findFirst().get();
         if (index.get() >= 0) {
             setSelectedIndex(index.get());
         }
@@ -381,7 +386,7 @@ public class TabSheet extends Component implements HasSize, HasTheme {
             super(source, fromClient);
             this.index = (int) details.getNumber("index");
             this.previousIndex = (int) details.getNumber("previousIndex");
-            this.previousTab =  details.getString("previousTab");
+            this.previousTab = details.getString("previousTab");
             this.tab = details.getString("tab");
             this.caption = details.getString("caption");
             this.source = source;
