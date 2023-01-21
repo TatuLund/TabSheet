@@ -1,7 +1,10 @@
-import '@vaadin/vaadin-tabs';
-import '@polymer/iron-icon';
+import '@vaadin/tabs';
+import '@vaadin/icon';
+import '@vaadin/tooltip';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
-import { customElement, property, css, html, LitElement, TemplateResult } from 'lit-element';
+import { css, html, LitElement, TemplateResult, nothing } from 'lit';
+import { customElement, property } from 'lit/decorators.js';
+import { TabsSelectedChangedEvent } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
 import './custom-tabs.js';
 
 @customElement('tab-sheet')
@@ -72,16 +75,19 @@ export class TabSheet extends ThemableMixin(LitElement) {
 	  `;
   }
 
-  selectedChanged(e: CustomEvent) {
+  selectedChanged(e: TabsSelectedChangedEvent) {
     const page = e.detail.value;
     const tab = this.getTab(page);
     this._doSelectTab(page);
     const details : JSON = <JSON><unknown>{
-	  "index": page,
+	    "index": page,
       "caption": this.getTabCaption(tab),
-      "tab": tab
+      "tab": tab,
+      "previousIndex": this.selected,
+      "previousTab": this.getTab(this.selected),
     }
-	const event = new CustomEvent('tab-changed', {
+    this.selected = page;
+    const event = new CustomEvent('tab-changed', {
 		detail: details,
         composed: true,
         cancelable: true,
@@ -137,17 +143,23 @@ export class TabSheet extends ThemableMixin(LitElement) {
 	return captions;
   }
 
+  _getIcon(icon : string | undefined | null) : TemplateResult {
+	return html`${icon ? html`<vaadin-icon icon="${icon}"></vaadin-icon>` : nothing}`;
+  }
+
+  _getTooltip(text : string | undefined | null) : TemplateResult {
+	return html `${text ? html`<vaadin-tooltip slot="tooltip" text="${text}"></vaadin-tooltip>` : nothing}`;
+  }
+
   _getTabs() : TemplateResult[] {
 	const templates: TemplateResult[] = [];
 	for (var i=0; i < this.children.length; i++) {
 		const element = this.children.item(i);
 		const caption = element?.getAttribute("tabcaption");
+		const tooltip = element?.getAttribute("tooltip");
 		const icon = element?.getAttribute("tabicon");
-		if (caption && icon) {
-			const template = html`<vaadin-tab part="tab" theme="${this.theme}"><iron-icon icon="${icon}"></iron-icon>${caption}</vaadin-tab>`
-			templates.push(template)
-	    } else if (caption) {
-			const template = html`<vaadin-tab part="tab" theme="${this.theme}">${caption}</vaadin-tab>`
+        if (caption) {
+			const template = html`<vaadin-tab part="tab" theme="${this.theme}">${this._getIcon(icon)}${caption}${this._getTooltip(tooltip)}</vaadin-tab>`
 			templates.push(template)		
 		} else {
 			templates.push(html``);
@@ -203,7 +215,6 @@ export class TabSheet extends ThemableMixin(LitElement) {
   }
 
   _setTheme(theme : string) {
-	this.theme = theme;
   }
 
   render() {
