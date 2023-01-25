@@ -160,8 +160,12 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *            Tab identifier of the tab to be removed
      */
     public void removeTab(String tab) {
-        getComponent(tab).ifPresentOrElse(component -> removeTab(component),
-                () -> getElement().executeJs("this.removeTab($0)", tab));
+        Optional<Component> c = getComponent(tab);
+        if (c.isPresent()) {
+            removeTab(c.get());
+        } else {
+            getElement().executeJs("this.removeTab($0)", tab);
+        }
     }
 
     /**
