@@ -156,7 +156,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
 		const tooltip = element?.getAttribute("tooltip");
 		const icon = element?.getAttribute("tabicon");
         if (caption) {
-			const template = html`<vaadin-tab part="tab" theme="${this.theme}">${this._getIcon(icon)}${caption}${this._getTooltip(tooltip)}</vaadin-tab>`
+			const template = html`<vaadin-tab part="tab" title="${tooltip? tooltip:''}" theme="${this.theme}">${this._getIcon(icon)}${caption}</vaadin-tab>`
 			templates.push(template)		
 		} else {
 			templates.push(html``);
