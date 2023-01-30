@@ -77,11 +77,14 @@ export class TabSheet extends ThemableMixin(LitElement) {
     const tab = this.getTab(page);
     this._doSelectTab(page);
     const details : JSON = <JSON><unknown>{
-	  "index": page,
+	    "index": page,
       "caption": this.getTabCaption(tab),
-      "tab": tab
+      "tab": tab,
+      "previousIndex": this.selected,
+      "previousTab": this.getTab(this.selected),
     }
-	const event = new CustomEvent('tab-changed', {
+    this.selected = page;
+    const event = new CustomEvent('tab-changed', {
 		detail: details,
         composed: true,
         cancelable: true,
@@ -137,17 +140,23 @@ export class TabSheet extends ThemableMixin(LitElement) {
 	return captions;
   }
 
+  _getIcon(icon : string | undefined | null) : TemplateResult {
+	return html`${icon ? html`<iron-icon icon="${icon}"></iron-icon>` : html``}`;
+  }
+
+  _getTooltip(text : string | undefined | null) : TemplateResult {
+	return html `${text ? html`<vaadin-tooltip slot="tooltip" text="${text}"></vaadin-tooltip>` : html``}`;
+  }
+
   _getTabs() : TemplateResult[] {
 	const templates: TemplateResult[] = [];
 	for (var i=0; i < this.children.length; i++) {
 		const element = this.children.item(i);
 		const caption = element?.getAttribute("tabcaption");
+		const tooltip = element?.getAttribute("tooltip");
 		const icon = element?.getAttribute("tabicon");
-		if (caption && icon) {
-			const template = html`<vaadin-tab part="tab" theme="${this.theme}"><iron-icon icon="${icon}"></iron-icon>${caption}</vaadin-tab>`
-			templates.push(template)
-	    } else if (caption) {
-			const template = html`<vaadin-tab part="tab" theme="${this.theme}">${caption}</vaadin-tab>`
+        if (caption) {
+			const template = html`<vaadin-tab part="tab" title="${tooltip? tooltip:''}" theme="${this.theme}">${this._getIcon(icon)}${caption}</vaadin-tab>`
 			templates.push(template)		
 		} else {
 			templates.push(html``);
@@ -203,7 +212,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
   }
 
   _setTheme(theme : string) {
-	this.theme = theme;
+    this.theme= theme;
   }
 
   render() {

@@ -1,9 +1,7 @@
 package org.vaadin.addons.tatu;
 
-import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
-
-import com.vaadin.flow.component.ComponentEvent;
-import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
@@ -11,16 +9,21 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
-import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.vaadin.flow.shared.Registration;
+import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Route(value = "", layout = MainLayout.class)
 @RouteAlias(value = "tab-sheet-java")
 public class JavaView extends Div {
+
+    private List<Component> allTabs = new ArrayList<>();
 
     public JavaView() {
         setId("java-view");
@@ -28,18 +31,20 @@ public class JavaView extends Div {
         TabSheet tabSheet = new TabSheet();
         tabSheet.addThemeVariants(TabSheetVariant.LUMO_CENTERED);
         tabSheet.addTab("First tab", createTabContent("400px"),
-                VaadinIcon.TEXT_INPUT);
+                VaadinIcon.TEXT_INPUT, "The first tab");
         tabSheet.addTab("Second tab", createTabContent("500px"),
                 VaadinIcon.TEXT_INPUT);
         tabSheet.addTab("Third tab", createTabContent("600px"),
                 VaadinIcon.TEXT_INPUT);
         tabSheet.addTab("Fourth tab", createTabContent("700px"),
-                VaadinIcon.TEXT_INPUT);
+                VaadinIcon.TEXT_INPUT, "The last tab");
         tabSheet.addTab(" ", new Div(), VaadinIcon.PLUS);
 
         tabSheet.addTabChangedListener(event -> {
-            Notification.show("Index: '" + event.getIndex() + "' Caption: '"
-                    + event.getCaption() + "' Tab: '" + event.getTab() + "'");
+            Notification.show("FROM Index: '" + event.getPreviousIndex()
+                    + "' Tab: '" + event.getPreviousTab() + "'" + " TO Index: '"
+                    + event.getIndex() + "' Caption: '" + event.getCaption()
+                    + "' Tab: '" + event.getTab() + "'");
             if (event.getCaption() != null && event.getCaption().equals(" ")) {
                 tabSheet.removeTab(event.getTab());
                 tabSheet.addTab("New", new Span("New tab"));
@@ -84,7 +89,23 @@ public class JavaView extends Div {
         });
         themes.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
 
-        add(tabSheet, orientation, themes, blue);
+        // Selection buttons
+        Button selectFirst = new Button("First (div)",
+                e -> tabSheet.setSelectedComponent(allTabs.get(0)));
+        Button selectFirstIndex = new Button("First (index)",
+                e -> tabSheet.setSelectedIndex(0));
+        Button selectFirstId = new Button("First (id)",
+                e -> tabSheet.setSelected("sheet0"));
+        Button selectLast = new Button("Last (div)", e -> tabSheet
+                .setSelectedComponent(allTabs.get(allTabs.size() - 1)));
+        Button selectLastIndex = new Button("Last (index)",
+                e -> tabSheet.setSelectedIndex(allTabs.size() - 1));
+        Button selectLastId = new Button("Last (id)",
+                e -> tabSheet.setSelected("sheet" + (allTabs.size() - 1)));
+        HorizontalLayout selectionButtons = new HorizontalLayout(selectFirst,
+                selectFirstIndex, selectFirstId, selectLast, selectLastIndex,
+                selectLastId);
+        add(tabSheet, orientation, themes, blue, selectionButtons);
     }
 
     public Div createTabContent(String width) {
@@ -95,6 +116,7 @@ public class JavaView extends Div {
         area.setWidth(width);
         div.add(area);
         div.setSizeFull();
+        allTabs.add(div);
         return div;
     }
 }

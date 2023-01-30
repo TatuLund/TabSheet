@@ -92,7 +92,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<!-- Replace artifactId with vaadin-core to use only free components -->
-			<artifactId>vaadin</artifactId>
+			<artifactId>vaadin-core</artifactId>
 		</dependency>
     	<dependency>
 			<groupId>org.slf4j</groupId>
@@ -113,7 +113,7 @@
 		<dependency>
 			<groupId>io.github.bonigarcia</groupId>
 			<artifactId>webdrivermanager</artifactId>
-			<version>3.8.1</version>
+			<version>5.3.1</version>
 			<scope>test</scope>
 			<exclusions>
 				<exclusion>
@@ -228,9 +228,8 @@
 							</execution>
 						</executions>
 						<configuration>
-							<javadocExecutable>${java.home}/bin/javadoc</javadocExecutable>
 							<quiet>true</quiet>
-							<additionalparam>-Xdoclint:none</additionalparam>
+							<doclint>none</doclint>
 						</configuration>
 					</plugin>
 					<plugin>

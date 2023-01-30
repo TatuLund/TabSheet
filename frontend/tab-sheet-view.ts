@@ -1,5 +1,5 @@
 //import './tab-sheet.ts';
-import { customElement, property, css, html, LitElement } from 'lit-element';
+import { customElement, html, LitElement } from 'lit-element';
 
 @customElement('tab-sheet-view')
 export class TabSheetView extends LitElement {

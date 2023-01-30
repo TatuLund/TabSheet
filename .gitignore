@@ -1,0 +1,15 @@
+frontend/generated
+frontend/index.html
+vite.generated.ts
+vite.config.ts
+types.d.ts
+tsconfig.json
+pnpm-lock.yaml
+.pnpmfile.cjs
+.npmrc
+error-screenshots
+package.json
+pnpmfile.js
+tabsheet.iml
+webpack.config.js
+webpack.generated.js
