@@ -57,7 +57,9 @@ public class TabSheetInJavaViewIT extends AbstractViewTest {
 
     @Test
     public void tooltipWorks() {
-        // Tooltips in Vaadin 14 use 'title' attribute which cannot be tested easily
+        TabSheetElement tabSheet = $(TabSheetElement.class).first();
+        TabElement tab = tabSheet.getTabs().getTabElement("First area");
+        Assert.assertEquals("The first tab", tab.getAttribute("title"));
     }
 
     @Test

@@ -2,6 +2,7 @@ import '@vaadin/vaadin-tabs';
 import '@polymer/iron-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { customElement, property, css, html, LitElement, TemplateResult } from 'lit-element';
+import { nothing } from 'lit-html';
 import './custom-tabs.js';
 
 @customElement('tab-sheet')
@@ -141,11 +142,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
   }
 
   _getIcon(icon : string | undefined | null) : TemplateResult {
-	return html`${icon ? html`<iron-icon icon="${icon}"></iron-icon>` : html``}`;
-  }
-
-  _getTooltip(text : string | undefined | null) : TemplateResult {
-	return html `${text ? html`<vaadin-tooltip slot="tooltip" text="${text}"></vaadin-tooltip>` : html``}`;
+	return html`${icon ? html`<iron-icon icon="${icon}"></iron-icon>` : nothing}`;
   }
 
   _getTabs() : TemplateResult[] {
@@ -159,7 +156,7 @@ export class TabSheet extends ThemableMixin(LitElement) {
 			const template = html`<vaadin-tab part="tab" title="${tooltip? tooltip:''}" theme="${this.theme}">${this._getIcon(icon)}${caption}</vaadin-tab>`
 			templates.push(template)		
 		} else {
-			templates.push(html``);
+			templates.push(html`${nothing}`);
 		}
 	}
 	return templates;
