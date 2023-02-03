@@ -7,9 +7,12 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.interactions.Actions;
 
+import com.vaadin.flow.component.button.testbench.ButtonElement;
 import com.vaadin.flow.component.checkbox.testbench.CheckboxElement;
+import com.vaadin.flow.component.icon.testbench.IconElement;
 import com.vaadin.flow.component.notification.testbench.NotificationElement;
 import com.vaadin.flow.component.tabs.testbench.TabElement;
+import com.vaadin.flow.component.textfield.testbench.TextFieldElement;
 import com.vaadin.testbench.TestBenchElement;
 import com.vaadin.testbench.screenshot.ImageFileUtil;
 
@@ -85,4 +88,17 @@ public class TabSheetInJavaViewIT extends AbstractViewTest {
                 ImageFileUtil.getReferenceScreenshotFile("bordered-theme-vertical.png")));
     }
 
+    @Test
+    public void addRemoveWorks() {
+        TabSheetElement tabSheet = $(TabSheetElement.class).first();
+        Assert.assertEquals(5, tabSheet.$(TabElement.class).all().size());
+        ButtonElement addRemove = $(ButtonElement.class).id("addremove");
+        addRemove.click();
+        Assert.assertEquals(0, tabSheet.getTabs().getSelectedTabIndex());
+        Assert.assertEquals(4, tabSheet.$(TabElement.class).all().size());
+        Assert.assertEquals(-1, tabSheet.getTabs().getTab("Third tab"));
+        addRemove.click();
+        Assert.assertEquals(5, tabSheet.$(TabElement.class).all().size());
+        Assert.assertEquals(2, tabSheet.getTabs().getTab("Third tab"));
+    }
 }

@@ -7,11 +7,13 @@ import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
+import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.tabs.Tabs.Orientation;
 import com.vaadin.flow.component.textfield.TextArea;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import org.vaadin.addons.tatu.TabSheet.TabSheetVariant;
@@ -34,7 +36,8 @@ public class JavaView extends Div {
                 VaadinIcon.TEXT_INPUT, "The first tab");
         tabSheet.addTab("Second tab", createTabContent("500px"),
                 VaadinIcon.TEXT_INPUT);
-        tabSheet.addTab("Third tab", createTabContent("600px"),
+        Div component = createTabContent("600px");
+        tabSheet.addTab("Third tab", component,
                 VaadinIcon.TEXT_INPUT);
         tabSheet.addTab("Fourth tab", createTabContent("700px"),
                 VaadinIcon.TEXT_INPUT, "The last tab");
@@ -102,9 +105,21 @@ public class JavaView extends Div {
                 e -> tabSheet.setSelectedIndex(allTabs.size() - 1));
         Button selectLastId = new Button("Last (id)",
                 e -> tabSheet.setSelected("sheet" + (allTabs.size() - 1)));
+
+        Button addRemove = new Button("add/remove", event -> {
+            try {
+                tabSheet.removeTab(component);
+            } catch (IllegalArgumentException e) {
+                tabSheet.insertTab(2, "Third tab", component, VaadinIcon.NEWSPAPER);
+            }
+        });
+        addRemove.setId("addremove");
+        
         HorizontalLayout selectionButtons = new HorizontalLayout(selectFirst,
                 selectFirstIndex, selectFirstId, selectLast, selectLastIndex,
-                selectLastId);
+                selectLastId, addRemove);
+
+        
         add(tabSheet, orientation, themes, blue, selectionButtons);
     }
 

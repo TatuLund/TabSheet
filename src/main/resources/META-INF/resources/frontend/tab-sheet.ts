@@ -3,6 +3,7 @@ import '@polymer/iron-icon';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { customElement, property, css, html, LitElement, TemplateResult } from 'lit-element';
 import { nothing } from 'lit-html';
+import { ifDefined } from "lit-html/directives/if-defined.js";
 import './custom-tabs.js';
 
 @customElement('tab-sheet')
@@ -150,10 +151,10 @@ export class TabSheet extends ThemableMixin(LitElement) {
 	for (var i=0; i < this.children.length; i++) {
 		const element = this.children.item(i);
 		const caption = element?.getAttribute("tabcaption");
-		const tooltip = element?.getAttribute("tooltip");
+		const tooltip = element?.getAttribute("tooltip") ? element?.getAttribute("tooltip") : undefined;
 		const icon = element?.getAttribute("tabicon");
         if (caption) {
-			const template = html`<vaadin-tab part="tab" title="${tooltip? tooltip:''}" theme="${this.theme}">${this._getIcon(icon)}${caption}</vaadin-tab>`
+			const template = html`<vaadin-tab part="tab" title="${ifDefined(tooltip)}" theme="${this.theme}">${this._getIcon(icon)}${caption}</vaadin-tab>`
 			templates.push(template)		
 		} else {
 			templates.push(html`${nothing}`);

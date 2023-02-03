@@ -80,6 +80,35 @@ public class TabSheet extends Component implements HasSize, HasTheme {
             String tooltip) {
         Objects.requireNonNull(caption, "caption must be defined");
         Objects.requireNonNull(content, "content must be defined");
+        createSheet(caption, content, icon, tooltip);
+        getElement().appendChild(content.getElement());
+    }
+
+    /**
+     * Insert a new component to the TabSheet as a new sheet.
+     * 
+     * @param index
+     *            Index where to add the component
+     * @param caption
+     *            Caption string used in corresponding Tab
+     * @param content
+     *            The content Component
+     * @param icon
+     *            Icon to be used on tab, can be null
+     * @param tooltip
+     *            String used on tab for tooltip text, can be null
+     */
+    public void insertTab(int index, String caption, Component content,
+            VaadinIcon icon, String tooltip) {
+        Objects.requireNonNull(caption, "caption must be defined");
+        Objects.requireNonNull(content, "content must be defined");
+        createSheet(caption, content, icon, tooltip);
+        getElement().insertChild(index, content.getElement());
+        getElement().executeJs("this.requestUpdate()");
+    }
+
+    private void createSheet(String caption, Component content, VaadinIcon icon,
+            String tooltip) {
         content.getElement().setAttribute("tabcaption", caption);
         if (icon != null) {
             content.getElement().setAttribute("tabicon", getIcon(icon));
@@ -89,7 +118,6 @@ public class TabSheet extends Component implements HasSize, HasTheme {
         }
         content.getElement().setAttribute("slot", "sheet" + lasttab);
         lasttab++;
-        getElement().appendChild(content.getElement());
     }
 
     private String getIcon(VaadinIcon vaadinIcon) {
@@ -128,9 +156,38 @@ public class TabSheet extends Component implements HasSize, HasTheme {
      *            Caption string used in corresponding Tab
      * @param content
      *            The content Component
+     * @param icon
+     *            Icon to be used on tab, can be null
+     */
+    public void insertTab(int index, String caption, Component content, VaadinIcon icon) {
+        insertTab(index, caption, content, icon, null);
+    }
+
+
+    /**
+     * Add a new component to the TabSheet as a new sheet.
+     * 
+     * @param caption
+     *            Caption string used in corresponding Tab
+     * @param content
+     *            The content Component
      */
     public void addTab(String caption, Component content) {
         addTab(caption, content, null, null);
+    }
+
+    /**
+     * Add a new component to the TabSheet as a new sheet.
+     * 
+     * @param index
+     *            Index where to add the component
+     * @param caption
+     *            Caption string used in corresponding Tab
+     * @param content
+     *            The content Component
+     */
+    public void insertTab(int index, String caption, Component content) {
+        insertTab(index, caption, content, null, null);
     }
 
     /**
@@ -287,10 +344,10 @@ public class TabSheet extends Component implements HasSize, HasTheme {
 
     /**
      * Get selected tab Component.
-     *<p>
+     * <p>
      * Note: This method only works if tabs are added uson
-     *        {{@link #addTab(String, Component)}} method. If the TabSheet
-     *        content is added in the template they do not exist on server side.
+     * {{@link #addTab(String, Component)}} method. If the TabSheet content is
+     * added in the template they do not exist on server side.
      *
      * @return Selected tab Component or <code>null</code> if no selection.
      */
@@ -302,10 +359,11 @@ public class TabSheet extends Component implements HasSize, HasTheme {
     /**
      * Set selected tab using Component. This will fire TabChangeEvent. Sheet
      * attached to the tab will be shown.
-     *<p>
+     * <p>
      * Note: This method only works if tabs are added uson
-     *        {{@link #addTab(String, Component)}} method. If the TabSheet
-     *        content is added in the template they do not exist on server side.
+     * {{@link #addTab(String, Component)}} method. If the TabSheet content is
+     * added in the template they do not exist on server side.
+     * 
      * @param tab
      *            Component to select.
      */
