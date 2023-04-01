@@ -4,7 +4,7 @@ import '@vaadin/tooltip';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { css, html, LitElement, TemplateResult, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
-import { TabsSelectedChangedEvent } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import { TabsSelectedChangedEvent } from '@vaadin/tabs/vaadin-tabs.js';
 import './custom-tabs.js';
 
 @customElement('tab-sheet')

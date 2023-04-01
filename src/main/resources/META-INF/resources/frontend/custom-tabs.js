@@ -1,5 +1,5 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { Tabs } from '@vaadin/vaadin-tabs/vaadin-tabs.js';
+import { Tabs } from '@vaadin/tabs/vaadin-tabs.js';
 
 export class CustomTabs extends Tabs {
   static get is() {
