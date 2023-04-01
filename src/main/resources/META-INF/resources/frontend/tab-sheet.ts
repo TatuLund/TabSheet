@@ -214,7 +214,8 @@ export class TabSheet extends ThemableMixin(LitElement) {
     return elements;
   }
 
-  _setTheme(theme : string) {
+  _set_theme(theme : string) {
+	 this.theme = theme;
   }
 
   render() {
